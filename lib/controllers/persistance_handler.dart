@@ -43,4 +43,16 @@ class PersistanceHandler {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('user');
   }
+
+  // Sauvegarder la photo de profil
+  Future<void> profilePhoto(String photo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('profile_photo', photo);
+  }
+
+  // Récupérer la photo de profil
+  Future<String> getProfilePhoto() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('profile_photo') ?? '';
+  }
 }

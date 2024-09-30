@@ -41,4 +41,27 @@ class JSONHandler {
     return jsonEncode(parameters);
   }
 
+  Future<String> removeFriend(String email) async {
+    Map<String, String> parameters = {
+      "email": email,
+    };
+    return jsonEncode(parameters);
+  }
+
+  Future<String> addFriend(String email) async {
+    Map<String, String> parameters = {
+      "email": email,
+    };
+    return jsonEncode(parameters);
+  }
+
+  Future<String> updateUser(
+      String name, String email, String? profileImage) async {
+    Map<String, String> parameters = {
+      "name": name,
+      "email": email,
+      "profileImage": profileImage != null ? profileImage : '',
+    };
+    return jsonEncode(parameters);
+  }
 }

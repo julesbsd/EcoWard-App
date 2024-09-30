@@ -6,21 +6,38 @@ class UserProvider with ChangeNotifier {
     id: 0,
     name: '',
     email: '',
-    profilePhotoUrl: '',
-    role: Role(id: 0, name: ''),
-    company: Company(
-      id: 0,
-      name: '',
-      email: '',
-      logo: '',
-      website: '',
-    ),
+    profile_photo_url: '',
+    // role: Role(id: 0, name: ''),
+    // company: Company(
+    //   id: 0,
+    //   name: '',
+    //   email: '',
+    //   logo: '',
+    //   website: '',
+    // ),
     actions: [],
     friends: [],
+    steps: 0,
+    points: 0,
   );
 
-  void setUser(User user) {
-    user = user;
+  void setUser(User newUser) {
+    user = newUser;
+    notifyListeners();
+  }
+
+  void setSteps(int newSteps) {
+    user.steps = newSteps;
+    notifyListeners();
+  }
+
+  void setPoints(int newPoints) {
+    user.points = newPoints;
+    notifyListeners();
+  }
+
+  void setFriends(List<dynamic> newFriends) {
+    user.friends = newFriends;
     notifyListeners();
   }
 

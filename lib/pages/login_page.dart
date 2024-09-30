@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ecoward/components/my_button.dart';
 import 'package:ecoward/controllers/persistance_handler.dart';
 import 'package:ecoward/controllers/providers/UserProvider.dart';
@@ -5,7 +7,7 @@ import 'package:ecoward/global/routes.dart';
 import 'package:ecoward/http/http_service.dart';
 import 'package:ecoward/model/user.dart';
 import 'package:ecoward/pages/forgot_password.dart';
-import 'package:ecoward/pages/home_page.dart';
+import 'package:ecoward/pages/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -14,7 +16,6 @@ import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
-
 
   LoginPage({super.key, required this.onTap});
 
@@ -128,12 +129,6 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                   ),
                 ),
-                const SizedBox(height: 10),
-                // if (_errorMessage != null)
-                //   Text(
-                //     _errorMessage!,
-                //     style: const TextStyle(color: Colors.red),
-                //   ),
                 const SizedBox(height: 30.0),
                 MyButton(
                     text: 'Connexion',
@@ -146,29 +141,32 @@ class _LoginPageState extends State<LoginPage> {
                       if (res.statusCode == 200) {
                         final Map<String, dynamic> responseData =
                             jsonDecode(res.body);
-
                         final String token = responseData['access_token'];
                         final Map<String, dynamic> userData =
                             responseData['user'];
                         final int steps = responseData['step'];
+                        final int points = responseData['points'];
+                        final String image =
+                            responseData['profile_photo_url'] ?? '';
 
                         User user = User.fromJson(userData);
 
                         await PersistanceHandler().setAccessToken(token);
-                        Provider.of<UserProvider>(context, listen: false)
-                            .setUser(user);
-                            pUser.setUser(user);
+                        await PersistanceHandler().profilePhoto(image);
+
+                        pUser.setUser(user);
+                        pUser.setPoints(points);
+                        pUser.setSteps(steps);
+
                         // Vérifier les données sauvegardées
                         var getToken =
                             await PersistanceHandler().getAccessToken();
                         User? getUser = await PersistanceHandler().getUser();
 
-                        print('Token: $getToken');
-                        print('User: ${user.name}');
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HomePage(),
+                            builder: (context) => Menu(),
                           ),
                         );
                       }
@@ -205,7 +203,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 80),
               ],
             ),

@@ -2,21 +2,26 @@ class User {
   int id;
   String name;
   String email;
-  Role role;
-  String profilePhotoUrl;
-  Company company;
-  List<dynamic> actions; // Vous pouvez ajuster le type selon la nature des actions
+  // Role? role;
+  String profile_photo_url;
+  // Company company;
+  List<dynamic>
+      actions; // Vous pouvez ajuster le type selon la nature des actions
   List<dynamic> friends; // Vous pouvez ajuster le type selon la nature des amis
+  int steps;
+  int points;
 
   User({
     required this.id,
     required this.name,
     required this.email,
-    required this.role,
-    required this.profilePhotoUrl,
-    required this.company,
+    // required this.role,
+    required this.profile_photo_url,
+    // required this.company,
     this.actions = const [],
     this.friends = const [],
+    this.steps = 0,
+    this.points = 0,
   });
 
   // Fonction pour convertir un User en JSON
@@ -25,11 +30,13 @@ class User {
       'id': id,
       'name': name,
       'email': email,
-      'role': role.toJson(),
-      'profile_photo_url': profilePhotoUrl,
-      'company': company.toJson(),
+      'role': '',
+      'profile_photo_url': profile_photo_url,
+      'company': '',
       'actions': actions,
       'friends': friends,
+      'steps': steps,
+      'points': points,
     };
   }
 
@@ -39,11 +46,14 @@ class User {
       id: json['id'],
       name: json['name'],
       email: json['email'],
-      role: Role.fromJson(json['role']),
-      profilePhotoUrl: json['profile_photo_url'],
-      company: Company.fromJson(json['company']),
+      // role: Role.fromJson(json['role']) ?? '',
+      // role: '',
+      profile_photo_url: json['profile_photo_url'] ?? '',
+      // company: Company.fromJson(json['company']),
       actions: List<dynamic>.from(json['actions'] ?? []),
       friends: List<dynamic>.from(json['friends'] ?? []),
+      steps: json['steps'] ?? 0,
+      points: json['points'] ?? 0,
     );
   }
 }
@@ -63,8 +73,8 @@ class Role {
 
   factory Role.fromJson(Map<String, dynamic> json) {
     return Role(
-      id: json['id'],
-      name: json['name'],
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
     );
   }
 }
