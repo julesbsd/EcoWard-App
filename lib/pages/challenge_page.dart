@@ -5,22 +5,32 @@ class ChallengePage extends StatelessWidget {
   const ChallengePage({super.key});
   static const challenge = [
     {
-      'title': 'Nettoyage de la plage',
-      'description': 'Plage de la Garoupe',
-      'date': 'Samedi 12 juin',
-      'participants': 12,
+      'title': 'Défi des 50 objets',
+      'description': 'Trouvez et ramassez 50 objets différents hetés dans la nature',
     },
     {
-      'title': 'Ramassage de déchets',
-      'location': 'Parc de la Roseraie',
-      'date': 'Dimanche 13 juin',
-      'participants': 5,
+      'title': 'Challenge de recyclage',
+      'description': 'Recyclez au moins cinq types de déchets différents en une semaine',
     },
     {
-      'title': 'Plantation d\'arbres',
-      'location': 'Forêt de la Valmasque',
-      'date': 'Samedi 19 juin',
-      'participants': 8,
+      'title': 'Défi des mégots',
+      'description': 'Collectez un maximum de mégots de cigarettes en une journée',
+    },
+    {
+      'title': 'Défi des 30 jours',
+      'description': 'Ramassez au moins un déchet par jour pendant 30 jours',
+    },
+    {
+      'title': 'Défi zéro plastique',
+      'description': 'Vivez une semaine sans utiliser de plastique à usage unique et partagez vos astuces',
+    },
+    {
+      'title': 'Défi des paires',
+      'description': 'Trouvez et ramasser des paires d\'objets (deux bouteilles, deux canettes, etc.)',
+    },
+    {
+      'title': 'Défi des 5 minutes',
+      'description': 'Ramassez autant de déchets que possible en seulement 5 minutes',
     },
   ];
   @override
@@ -37,84 +47,45 @@ class ChallengePage extends StatelessWidget {
                 'Lance une action et trouve des partenaires EcoWard pour te rejoindre.',
                 style: TextStyle(fontSize: 16),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // _buildFilterButton('À la une', true),
-                  // _buildFilterButton('À proximité', false),
-                  // _buildFilterButton('Toutes', false),
-                  // _buildFilterButton('Mes actions', false),
                 ],
               ),
               const SizedBox(height: 20),
-              // Flexible(
-              //   fit: FlexFit.loose,
-              //   child: ListView.builder(
-              //     itemCount: challenge.length,
-              //     itemBuilder: (context, index) {
-              //       final item = challenge[index];
-              //       return ChallengeTile(
-              //         challenge: item,
-              //       );
-              //     },
-              //   ),
-              // ),
+              Expanded(
+                // fit: FlexFit.loose,
+                child: ListView.builder(
+                  itemCount: challenge.length,
+                  itemBuilder: (context, index) {
+                    final item = challenge[index];
+                    return ChallengeTile(
+                      challenge: item,
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 100),
             ],
           ),
         ),
       ),
     );
-    // return Padding(
-    //   padding: const EdgeInsets.all(20.0),
-    //   child: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       const Text(
-    //         'Le ramassage est plus amusant avec des amis ! '
-    //         'Lance une action et trouve des partenaires EcoWard pour te rejoindre.',
-    //         style: TextStyle(fontSize: 16),
-    //       ),
-    //       const SizedBox(height: 20),
-    //       Row(
-    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //         children: [
-    //           _buildFilterButton('À la une', true),
-    //           _buildFilterButton('À proximité', false),
-    //           _buildFilterButton('Toutes', false),
-    //           _buildFilterButton('Mes actions', false),
-    //         ],
-    //       ),
-    //       const SizedBox(height: 20),
-    //       Flexible(
-    //         fit: FlexFit.loose,
-    //         child: ListView.builder(
-    //           itemCount: challenge.length,
-    //           itemBuilder: (context, index) {
-    //             final item = challenge[index];
-    //             return ChallengeTile(
-    //               challenge: item,
-    //             );
-    //           },
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 
-  Widget _buildFilterButton(String title, bool isSelected) {
-    return TextButton(
-      style: TextButton.styleFrom(
-        backgroundColor: isSelected ? Colors.black : Colors.white,
-        // primary: isSelected ? Colors.white : Colors.black,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: Colors.black),
-        ),
-      ),
-      onPressed: () {},
-      child: Text(title),
-    );
-  }
+  // Widget _buildFilterButton(String title, bool isSelected) {
+  //   return TextButton(
+  //     style: TextButton.styleFrom(
+  //       backgroundColor: isSelected ? Colors.black : Colors.white,
+  //       // primary: isSelected ? Colors.white : Colors.black,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(20),
+  //         side: BorderSide(color: Colors.black),
+  //       ),
+  //     ),
+  //     onPressed: () {},
+  //     child: Text(title),
+  //   );
+  // }
 }

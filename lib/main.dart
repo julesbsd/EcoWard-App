@@ -1,4 +1,5 @@
 import 'package:ecoward/controllers/login_or_register.dart';
+import 'package:ecoward/controllers/providers/ActionProvider.dart';
 import 'package:ecoward/controllers/providers/PageProvider.dart';
 import 'package:ecoward/pages/loading_page.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => Pageprovider(), // Ajout de votre UserProvider ici
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ActionProvider(), // Ajout de votre UserProvider ici
         ),
       ],
       child: MyApp(), // Votre classe principale de l'application

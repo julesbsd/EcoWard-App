@@ -11,3 +11,5 @@ String postSaveStep = "$serverurl/save-step";
 String getFriends = "$serverurl/friends";
 String removeFriend = "$serverurl/friends/remove";
 String addNewFriend = "$serverurl/friends/add";
+
+String getTrashes = "$serverurl/trashes";

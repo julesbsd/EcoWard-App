@@ -3,6 +3,7 @@ import 'package:ecoward/controllers/providers/PageProvider.dart';
 import 'package:ecoward/controllers/providers/UserProvider.dart';
 import 'package:ecoward/global/routes.dart';
 import 'package:ecoward/pages/account_page.dart';
+import 'package:ecoward/pages/action_page.dart';
 import 'package:ecoward/pages/challenge_page.dart';
 import 'package:ecoward/pages/home_page.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +25,18 @@ class _MenuState extends State<Menu> {
   final List<Widget> _widgetOptions = <Widget>[
     const HomePage(),
     const ChallengePage(),
+    const ActionPage(),
     const ChallengePage(),
     const ChallengePage(),
     const ChallengePage(),
+  ];
+
+  final List<String> pages = [
+    'Home',
+    'Actions',
+    'Action',
+    'Boutique ',
+    'Classement',
   ];
 
   @override
@@ -47,70 +57,131 @@ class _MenuState extends State<Menu> {
             // Ajout de SingleChildScrollView pour rendre la page défilable
             child: Column(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 100,
-                  padding: const EdgeInsets.only(
-                      top: 30, left: 16, right: 16, bottom: 20),
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(0, 230, 118, 1),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: pUser == null
-                            ? const CircularProgressIndicator()
-                            : Text(
-                                'Bonjour, ${pUser.user.name}',
+                pPage.getIndex() == 0 || pPage.getIndex() == 2
+                    ? Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 90,
+                        padding: const EdgeInsets.only(
+                            top: 40, left: 16, right: 16, bottom: 10),
+                        decoration: const BoxDecoration(
+                          color: Color.fromRGBO(0, 230, 118, 1),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                                child: Text(
+                              'Bonjour, ${pUser.user.name}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                            )),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  size: 35,
+                                  Icons.notifications,
+                                  color: Colors.black,
+                                ),
+                                const SizedBox(width: 15),
+                                GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AccountPage()),
+                                      );
+                                    },
+                                    child: ClipOval(
+                                      child: Image.network(
+                                        image.isNotEmpty
+                                            ? image
+                                            : '$serverImgUrl${pUser.user.profile_photo_url}',
+                                        width: 40,
+                                        height: 40,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const Icon(
+                                            Icons.account_circle,
+                                            size: 40,
+                                            color: Colors.grey,
+                                          );
+                                        },
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 90,
+                        padding: const EdgeInsets.only(
+                            top: 40, left: 16, right: 16, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                pages[pPage.getIndex()],
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
                                     ?.copyWith(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16,
+                                      fontSize: 20,
                                     ),
                               ),
-                      ),
-                      Row(
-                        children: [
-                          const Icon(
-                            size: 35,
-                            Icons.notifications,
-                            color: Colors.black,
-                          ),
-                          const SizedBox(width: 15),
-                          GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AccountPage()),
-                                );
-                              },
-                              child: ClipOval(
-                                child: Image.network(
-                                  image.isNotEmpty
-                                      ? image
-                                      : '${serverImgUrl}${pUser.user.profile_photo_url}',
-                                  width: 40,
-                                  height: 40,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Icon(
-                                      Icons.account_circle,
-                                      size: 40,
-                                      color: Colors.grey,
-                                    );
-                                  },
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  size: 35,
+                                  Icons.notifications,
+                                  color: Colors.black,
                                 ),
-                              )),
-                        ],
+                                const SizedBox(width: 15),
+                                GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AccountPage()),
+                                      );
+                                    },
+                                    child: ClipOval(
+                                      child: Image.network(
+                                        image.isNotEmpty
+                                            ? image
+                                            : '$serverImgUrl${pUser.user.profile_photo_url}',
+                                        width: 40,
+                                        height: 40,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const Icon(
+                                            Icons.account_circle,
+                                            size: 40,
+                                            color: Colors.grey,
+                                          );
+                                        },
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height - 50,

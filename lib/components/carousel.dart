@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 final List<String> imgList = [
-  'https://picsum.photos/250?image=9',
+  'lib/assets/image1.jpg',
+  'lib/assets/image2.jpg',
   'https://picsum.photos/250?image=10',
   'https://picsum.photos/250?image=11',
-  'https://picsum.photos/250?image=12',
+  // 'https://picsum.photos/250?image=12',
 ];
 
 class CarouselWidget extends StatelessWidget {
@@ -31,8 +32,9 @@ class CarouselWidget extends StatelessWidget {
                   child: Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child:
-                          Image.network(item, fit: BoxFit.cover, width: 1000),
+                      child: item.startsWith('http')
+                          ? Image.network(item, fit: BoxFit.cover, width: 1000)
+                          : Image.asset(item, fit: BoxFit.cover, width: 1000),
                     ),
                   ),
                 ))

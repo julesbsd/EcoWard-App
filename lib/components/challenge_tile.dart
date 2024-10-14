@@ -6,19 +6,60 @@ class ChallengeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
+    return Container(
+      decoration: BoxDecoration(
+        color:
+            Theme.of(context).colorScheme.secondary, // Couleur de fond blanche
+        borderRadius:
+            BorderRadius.circular(20), // Coins arrondis plus prononcés
+        border: Border.all(color: Colors.grey.shade400), // Bordure grise
       ),
-      elevation: 3,
-      margin: const EdgeInsets.only(bottom: 15.0),
-      child: ListTile(
-        title: Text(challenge['title']),
-        subtitle: Text(challenge['description']),
-        trailing: const Icon(Icons.arrow_forward),
-        onTap: () {
-          // Ajouter action lorsque l'utilisateur appuie sur une carte
-        },
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+      padding:
+          const EdgeInsets.all(16), // Padding interne pour aérer le contenu
+      child: Row(
+        mainAxisAlignment:
+            MainAxisAlignment.spaceBetween, // Espacement entre texte et icône
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  challenge['title'],
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  challenge['description'],
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                  maxLines:
+                      null, // Permet à la description de s'étendre sur plusieurs lignes
+                ),
+              ],
+            ),
+          ),
+          CircleAvatar(
+            radius: 15,
+            backgroundColor: Colors.greenAccent, // Couleur de fond verte
+            child: IconButton(
+              icon: const Icon(
+                Icons.arrow_forward,
+                size: 16,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // Ajouter action lorsque l'utilisateur appuie sur l'icône
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
