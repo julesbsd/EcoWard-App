@@ -27,8 +27,8 @@ class _MenuState extends State<Menu> {
     const ChallengePage(),
     const ActionPage(),
     const ChallengePage(),
-    const ChallengePage(),
-    const ChallengePage(),
+    const AccountPage(),
+    // const AccountPage(),
   ];
 
   final List<String> pages = [
@@ -36,7 +36,7 @@ class _MenuState extends State<Menu> {
     'Actions',
     'Action',
     'Boutique ',
-    'Classement',
+    'Mon compte',
   ];
 
   @override
@@ -90,14 +90,7 @@ class _MenuState extends State<Menu> {
                                 ),
                                 const SizedBox(width: 15),
                                 GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AccountPage()),
-                                      );
-                                    },
+                                    onTap: () {},
                                     child: ClipOval(
                                       child: Image.network(
                                         image.isNotEmpty
@@ -151,14 +144,7 @@ class _MenuState extends State<Menu> {
                                 ),
                                 const SizedBox(width: 15),
                                 GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AccountPage()),
-                                      );
-                                    },
+                                    onTap: () {},
                                     child: ClipOval(
                                       child: Image.network(
                                         image.isNotEmpty
@@ -211,12 +197,12 @@ class _MenuState extends State<Menu> {
                 color: pPage.getIndex() == 2
                     ? const Color.fromRGBO(0, 230, 118, 1)
                     : Colors.black),
-            Icon(Icons.shopping_cart,
+            Icon(Icons.emoji_events,
                 size: 30,
                 color: pPage.getIndex() == 3
                     ? const Color.fromRGBO(0, 230, 118, 1)
                     : Colors.black),
-            Icon(Icons.emoji_events,
+            Icon(Icons.person,
                 size: 30,
                 color: pPage.getIndex() == 4
                     ? const Color.fromRGBO(0, 230, 118, 1)

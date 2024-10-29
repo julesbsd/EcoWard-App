@@ -69,19 +69,19 @@ class _AccountPageState extends State<AccountPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Mon compte'),
-        backgroundColor: Color.fromRGBO(0, 230, 118, 1),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => Menu()),
-            );
-          },
-        ),
-      ),
+      // appBar: AppBar(
+      //   title: Text('Mon compte'),
+      //   backgroundColor: Color.fromRGBO(0, 230, 118, 1),
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.arrow_back),
+      //     onPressed: () {
+      //       Navigator.pushReplacement(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => Menu()),
+      //       );
+      //     },
+      //   ),
+      // ),
       body: ListView(
         children: [
           ListTile(

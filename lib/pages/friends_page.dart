@@ -168,18 +168,22 @@ class _FriendsPageState extends State<FriendsPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   title: Text('Liste des amis'),
+      //   backgroundColor: Color.fromRGBO(0, 230, 118, 1),
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.arrow_back),
+      //     onPressed: () {
+      //       Navigator.push(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => const AccountPage()),
+      //       );
+      //     },
+      //   ),
+      // ),
       appBar: AppBar(
-        title: Text('Liste des amis'),
+        title: Text('Profil'),
         backgroundColor: Color.fromRGBO(0, 230, 118, 1),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AccountPage()),
-            );
-          },
-        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: newFriend,
