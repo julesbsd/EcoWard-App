@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:ecoward/controllers/providers/ActionProvider.dart';
 import 'package:ecoward/global/routes.dart';
 import 'package:ecoward/http/http_service.dart';
+import 'package:ecoward/pages/action_form.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -134,7 +135,7 @@ class _ActionPageState extends State<ActionPage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Container(
-              width: 300,
+              // width: 400,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListView.builder(
@@ -143,7 +144,7 @@ class _ActionPageState extends State<ActionPage> {
                     final item = _trashes[index];
                     return ListTile(
                       contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 16.0),
+                          vertical: 10.0, horizontal: 10.0),
                       leading: Image.network(
                         '$serverImgUrl${item['image']}',
                         width: 80, // Taille plus grande de l'icône
@@ -158,8 +159,12 @@ class _ActionPageState extends State<ActionPage> {
                       onTap: () {
                         pAction.setTrash(item['id']);
                         print('${item['name']} cliqué, id : ${item['id']}');
-                                inspect(pAction);
-
+                        inspect(pAction);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ActionForm()),
+                        );
                       },
                     );
                   },

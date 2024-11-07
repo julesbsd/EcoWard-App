@@ -96,7 +96,8 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profil'),
-        backgroundColor: Color.fromRGBO(0, 230, 118, 1),
+        // backgroundColor: Color.fromRGBO(0, 230, 118, 1),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
