@@ -13,16 +13,16 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => UserProvider(), // Ajout de votre UserProvider ici
+          create: (_) => UserProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => Pageprovider(), // Ajout de votre UserProvider ici
+          create: (_) => Pageprovider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => ActionProvider(), // Ajout de votre UserProvider ici
+          create: (_) => ActionProvider(),
         ),
       ],
-      child: MyApp(), // Votre classe principale de l'application
+      child: MyApp(),
     ),
   );
 }
@@ -30,7 +30,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
