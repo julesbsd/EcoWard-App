@@ -209,6 +209,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 const SizedBox(height: 30.0),
                 MyButton(
                     text: 'Réinitialiser le mot de passe',
+                    textColor: Colors.white,
+                    color: Theme.of(context).colorScheme.inversePrimary,
                     onTap: () {
                       _resetPassword(
                           emailController.text, passwordController.text);

@@ -6,7 +6,7 @@ ThemeData lightMode = ThemeData(
       primary: Color.fromRGBO(0, 230, 118, 1),
       secondary: Colors.grey.shade200,
       tertiary: Colors.white,
-      inversePrimary: Colors.grey.shade800,
+      inversePrimary: const Color(0xFF424242),
       shadow: Colors.grey.shade300,
     ),
     textTheme: TextTheme(
@@ -18,11 +18,16 @@ ThemeData lightMode = ThemeData(
       bodyLarge: const TextStyle(
           fontFamily: 'CaviarDreams',
           fontSize: 16,
-          fontWeight: FontWeight.normal,
+          fontWeight: FontWeight.w700,
           color: Colors.black),
       titleLarge: const TextStyle(
           fontFamily: 'CaviarDreams',
           fontSize: 24,
           fontWeight: FontWeight.bold,
+          color: Colors.black),
+      bodyMedium: const TextStyle(
+          fontFamily: 'CaviarDreams',
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
           color: Colors.black),
     ));

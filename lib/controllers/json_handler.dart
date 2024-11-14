@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
@@ -61,6 +63,19 @@ class JSONHandler {
       "name": name,
       "email": email,
       "profileImage": profileImage != null ? profileImage : '',
+    };
+    return jsonEncode(parameters);
+  }
+
+  Future<dynamic> sendAction(int trashId, int quantity, String imageTop,
+      String imageBottom, double latitude, double longitude) async {
+    Map<String, dynamic> parameters = {
+      "trashId": trashId,
+      "quantity": quantity,
+      "imageTop": imageTop,
+      "imageBottom": imageBottom,
+      "latitude": latitude,
+      "longitude": longitude,
     };
     return jsonEncode(parameters);
   }

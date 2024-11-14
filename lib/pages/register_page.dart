@@ -166,6 +166,8 @@ class RegisterPage extends StatelessWidget {
                 const SizedBox(height: 30.0),
                 MyButton(
                     text: 'Inscription',
+                    textColor: Colors.white,
+                    color: Theme.of(context).colorScheme.inversePrimary,
                     onTap: () {
                       // _register(nameController.text, emailController.text,
                       //     passwordController.text);

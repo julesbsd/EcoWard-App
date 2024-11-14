@@ -13,3 +13,7 @@ String removeFriend = "$serverurl/friends/remove";
 String addNewFriend = "$serverurl/friends/add";
 
 String getTrashes = "$serverurl/trashes";
+
+String getWeekSteps = "$serverurl/user/weekSteps";
+
+String postAction = "$serverurl/action";

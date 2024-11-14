@@ -163,7 +163,7 @@ class _ActionPageState extends State<ActionPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ActionForm()),
+                                builder: (context) => ActionForm(trashId: item['id'])),
                         );
                       },
                     );

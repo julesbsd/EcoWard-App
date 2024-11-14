@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   late UserProvider pUser;
 
   final TextEditingController emailController =
-      TextEditingController(text: 'stanford63@example.com');
+      TextEditingController(text: 'stan43@example.com');
 
   final TextEditingController passwordController =
       TextEditingController(text: 'password');
@@ -132,6 +132,8 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 30.0),
                 MyButton(
                     text: 'Connexion',
+                    textColor: Colors.white,
+                    color: Theme.of(context).colorScheme.inversePrimary,
                     onTap: () async {
                       String body = await JSONHandler()
                           .login(emailController.text, passwordController.text);
