@@ -38,7 +38,6 @@ class _LoadingPageState extends State<LoadingPage> {
 
       if (res.statusCode == 200) {
         final Map<String, dynamic> responseData = jsonDecode(res.body);
-        inspect(responseData);
         final int steps = responseData['steps'];
         final int points = responseData['points'];
         final Map<String, dynamic> userData = responseData['user'];

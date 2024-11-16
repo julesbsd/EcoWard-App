@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ThemeData lightMode = ThemeData(
     fontFamily: 'Raleway',
     colorScheme: ColorScheme.light(
-      primary: Color.fromRGBO(0, 230, 118, 1),
+      primary: Color(0xFF00E676),
       secondary: Colors.grey.shade200,
       tertiary: Colors.white,
       inversePrimary: const Color(0xFF424242),

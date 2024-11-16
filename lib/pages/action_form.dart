@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:ecoward/controllers/providers/UserProvider.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ecoward/components/animationCheck.dart';
 import 'package:ecoward/components/my_button.dart';
@@ -10,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:provider/provider.dart';
 
 class ActionForm extends StatefulWidget {
   final int trashId;
@@ -26,12 +29,13 @@ class _ActionFormState extends State<ActionForm> {
   File? _imageBottom;
   bool _isLoading = false;
   bool _isSuccess = false;
+  late UserProvider pUser;
 
-  @override
   void initState() {
     super.initState();
+        pUser = Provider.of<UserProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _pickImage(true);
+      _checkLocationPermission();
     });
   }
 
@@ -50,6 +54,55 @@ class _ActionFormState extends State<ActionForm> {
         }
       });
     }
+  }
+
+  Future<void> _checkLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Les services de localisation sont désactivés.'),
+        ),
+      );
+      return;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Les permissions de localisation sont refusées.'),
+          ),
+        );
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              'Les permissions de localisation sont refusées de façon permanente.'),
+        ),
+      );
+      return;
+    }
+    _pickImage(true);
   }
 
   Future<Position> _getCurrentPosition() async {
@@ -90,76 +143,89 @@ class _ActionFormState extends State<ActionForm> {
   }
 
   Future<void> sendAction() async {
-    if (_imageTop != null && _imageBottom != null) {
+  if (_imageTop != null && _imageBottom != null) {
+    setState(() {
+      _isLoading = true;
+    });
+
+    print('Début du traitement de l\'action');
+
+    String base64ImageTop = base64Encode(await _imageTop!.readAsBytes());
+    print('Image du haut encodée en base64');
+
+    String base64ImageBottom = base64Encode(await _imageBottom!.readAsBytes());
+    print('Image du bas encodée en base64');
+
+    Position position = await _getCurrentPosition();
+    double latitude = position.latitude;
+    double longitude = position.longitude;
+    print('Position obtenue: latitude = $latitude, longitude = $longitude');
+
+    String body = await JSONHandler().sendAction(
+      widget.trashId,
+      quantity,
+      base64ImageTop,
+      base64ImageBottom,
+      latitude,
+      longitude,
+    );
+    print('Corps de la requête préparé');
+
+    Response res = await HttpService().makePostRequestWithToken(postAction, body);
+    print('Requête envoyée, réponse reçue');
+    inspect(res.body);
+
+    final Map<String, dynamic> responseData = jsonDecode(res.body);
+    if (responseData['status'] == 'success') {
+      final int points = responseData['points'];
+      pUser.setPoints(points);
+
       setState(() {
-        _isLoading = true;
+        _isLoading = false;
+        _isSuccess = true;
       });
 
-      String base64ImageTop = base64Encode(await _imageTop!.readAsBytes());
-      String base64ImageBottom =
-          base64Encode(await _imageBottom!.readAsBytes());
+      print('Action réussie');
 
-      Position position = await _getCurrentPosition();
-      double latitude = position.latitude;
-      double longitude = position.longitude;
+      await Future.delayed(const Duration(seconds: 1));
 
-      inspect(position);
-      String body = await JSONHandler().sendAction(
-        widget.trashId,
-        quantity,
-        base64ImageTop,
-        base64ImageBottom,
-        latitude,
-        longitude,
-      );
+      setState(() {
+        _isSuccess = false;
+      });
 
-      Response res =
-          await HttpService().makePostRequestWithToken(postAction, body);
-      final Map<String, dynamic> responseData = jsonDecode(res.body);
-      if (responseData['status'] == 'success') {
-        setState(() {
-          _isLoading = false;
-          _isSuccess = true;
-        });
-
-        await Future.delayed(const Duration(seconds: 1));
-
-        setState(() {
-          _isSuccess = false;
-        });
-
-        Navigator.pop(context);
-      } else {
-        setState(() {
-          _isLoading = false;
-        });
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Erreur'),
-              content: Text('Erreur: $responseData["message"]'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
+      Navigator.pop(context);
     } else {
-      // Show an error message if images are missing
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Veuillez ajouter les deux photos avant de valider.'),
-        ),
+      setState(() {
+        _isLoading = false;
+      });
+      print('Erreur: ${responseData["message"]}');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Erreur'),
+            content: Text('Erreur: ${responseData["message"]}'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
       );
     }
+  } else {
+    // Show an error message if images are missing
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Veuillez ajouter les deux photos avant de valider.'),
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {

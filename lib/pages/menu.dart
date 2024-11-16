@@ -1,13 +1,15 @@
+import 'dart:developer';
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:ecoward/components/drawer.dart';
 import 'package:ecoward/controllers/providers/PageProvider.dart';
 import 'package:ecoward/controllers/providers/UserProvider.dart';
 import 'package:ecoward/global/routes.dart';
-import 'package:ecoward/pages/account_page.dart';
 import 'package:ecoward/pages/action_page.dart';
 import 'package:ecoward/pages/challenge_page.dart';
 import 'package:ecoward/pages/graphic_page.dart';
 import 'package:ecoward/pages/home_page.dart';
+import 'package:ecoward/pages/ranking_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,10 +31,9 @@ class _MenuState extends State<Menu> {
     const HomePage(),
     const ChallengePage(),
     const ActionPage(),
-    const ChallengePage(),
+    RankingPage(),
     const GraphicPage(),
-    // const AccountPage(),
-  ];
+      ];
 
   final List<String> pages = [
     'Home',

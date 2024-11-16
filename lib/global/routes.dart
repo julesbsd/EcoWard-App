@@ -17,3 +17,5 @@ String getTrashes = "$serverurl/trashes";
 String getWeekSteps = "$serverurl/user/weekSteps";
 
 String postAction = "$serverurl/action";
+
+String getRanking = "$serverurl/ranking";

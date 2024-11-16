@@ -137,17 +137,20 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () async {
                       String body = await JSONHandler()
                           .login(emailController.text, passwordController.text);
+
                       Response res = await HttpService()
                           .makePostRequestWithoutToken(postLogin, body);
 
                       if (res.statusCode == 200) {
                         final Map<String, dynamic> responseData =
                             jsonDecode(res.body);
+
                         final String token = responseData['access_token'];
+
                         final Map<String, dynamic> userData =
                             responseData['user'];
                         final int steps = responseData['step'];
-                        final int points = responseData['points'];
+
                         final String image =
                             responseData['profile_photo_url'] ?? '';
 
@@ -157,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                         await PersistanceHandler().profilePhoto(image);
 
                         pUser.setUser(user);
-                        pUser.setPoints(points);
+                        // pUser.setPoints(user);
                         pUser.setSteps(steps);
 
                         // Vérifier les données sauvegardées
@@ -170,6 +173,37 @@ class _LoginPageState extends State<LoginPage> {
                           MaterialPageRoute(
                             builder: (context) => Menu(),
                           ),
+                        );
+                      } else {
+                        final Map<String, dynamic> responseData =
+                            jsonDecode(res.body);
+
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Erreur de connexion'),
+                              content: responseData['error'] is Map
+                                  ? Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: (responseData['error']
+                                              as Map<String, dynamic>)
+                                          .values
+                                          .expand((element) => element)
+                                          .map((e) => Text(e))
+                                          .toList(),
+                                    )
+                                  : Text(responseData['error'].toString()),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('OK'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
                         );
                       }
                     }),

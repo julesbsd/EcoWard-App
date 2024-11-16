@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:ecoward/controllers/json_handler.dart';
 import 'package:ecoward/controllers/providers/UserProvider.dart';
 import 'package:ecoward/global/routes.dart';
 import 'package:ecoward/http/http_service.dart';
 import 'package:ecoward/model/user.dart';
-import 'package:ecoward/pages/account_page.dart';
 import 'package:ecoward/pages/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';

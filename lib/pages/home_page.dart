@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ecoward/controllers/json_handler.dart';
 import 'package:ecoward/controllers/login_or_register.dart';
@@ -83,6 +85,10 @@ class _HomePageState extends State<HomePage> {
         await HttpService().makePostRequestWithToken(postSaveStep, body);
     if (res.statusCode == 201) {
       print("Steps saved successfully");
+      final Map<String, dynamic> responseData = jsonDecode(res.body);
+
+      final int points = responseData['points'];
+      pUser.setPoints(points);
     } else {
       print("Failed to save steps: ${res.body}");
     }

@@ -40,11 +40,8 @@ class _ActionPageState extends State<ActionPage> {
       setState(() {
         _trashes = trashes;
         _isLoading = false; // Fin du chargement de la requête
-        inspect(pAction);
       });
     } else {
-      inspect(pAction);
-      print('Error: ${res.body}');
       setState(() {
         _isLoading = false; // Fin du chargement même en cas d'erreur
       });
@@ -145,11 +142,18 @@ class _ActionPageState extends State<ActionPage> {
                     return ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 10.0),
-                      leading: Image.network(
+                        leading: Image.network(
                         '$serverImgUrl${item['image']}',
                         width: 80, // Taille plus grande de l'icône
                         height: 80,
-                      ),
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                          'lib/assets/ecoward_logo.png',
+                          width: 80,
+                          height: 80,
+                          );
+                        },
+                        ),
                       title: Text(
                         item['name'],
                         style: const TextStyle(
@@ -159,7 +163,6 @@ class _ActionPageState extends State<ActionPage> {
                       onTap: () {
                         pAction.setTrash(item['id']);
                         print('${item['name']} cliqué, id : ${item['id']}');
-                        inspect(pAction);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
