@@ -149,7 +149,6 @@ class _LoginPageState extends State<LoginPage> {
 
                         final Map<String, dynamic> userData =
                             responseData['user'];
-                        final int steps = responseData['step'];
 
                         final String image =
                             responseData['profile_photo_url'] ?? '';
@@ -158,10 +157,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         await PersistanceHandler().setAccessToken(token);
                         await PersistanceHandler().profilePhoto(image);
-
                         pUser.setUser(user);
-                        // pUser.setPoints(user);
-                        pUser.setSteps(steps);
 
                         // Vérifier les données sauvegardées
                         var getToken =

@@ -60,7 +60,8 @@ class _HomePageState extends State<HomePage> {
   Future<void> _loadSteps() async {
     // Récupérer les pas depuis le Provider
     int savedSteps = pUser.user.steps;
-
+    print('steps from provider: $savedSteps');
+    print('puser.user: ${pUser.user.steps}');
     // Actualiser l'UI avec la valeur récupérée
     setState(() {
       _steps = savedSteps;
@@ -71,22 +72,42 @@ class _HomePageState extends State<HomePage> {
 
   void _startPedometer() {
     _pedometer = Pedometer();
-    Pedometer.stepCountStream.listen(_onStepCount);
+    _steps = pUser.user.steps; // Valeur initiale depuis le provider
+
+    int? baseSteps; // Pour stocker la référence initiale du pédomètre
+
+    Pedometer.stepCountStream.listen((StepCount event) {
+      if (baseSteps == null) {
+        baseSteps = event.steps;
+        return;
+      }
+
+      // Calculer uniquement les nouveaux pas depuis le début de l'écoute
+      int stepsSinceStart = event.steps - baseSteps!;
+      int totalSteps = pUser.user.steps + stepsSinceStart;
+
+      if (totalSteps != _steps) {
+        // Éviter les mises à jour inutiles
+        _onStepCount(totalSteps);
+      }
+    });
   }
 
-  void _onStepCount(StepCount stepCount) async {
+  void _onStepCount(int totalSteps) async {
+    // Mettre à jour le provider et l'état local
+    pUser.setSteps(totalSteps);
     setState(() {
-      _steps = stepCount.steps;
+      _steps = totalSteps;
     });
-    await _saveSteps(stepCount.steps);
-    // await saveStepsService(stepCount.steps);
-    String body = await JSONHandler().saveSteps(stepCount.steps);
+
+    // Sauvegarder en DB
+    String body = await JSONHandler().saveSteps(totalSteps);
     Response res =
         await HttpService().makePostRequestWithToken(postSaveStep, body);
-    if (res.statusCode == 201) {
-      print("Steps saved successfully");
-      final Map<String, dynamic> responseData = jsonDecode(res.body);
 
+    if (res.statusCode == 201) {
+      print("Steps saved successfully: $totalSteps");
+      final Map<String, dynamic> responseData = jsonDecode(res.body);
       final int points = responseData['points'];
       pUser.setPoints(points);
     } else {
@@ -95,7 +116,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _saveSteps(int steps) async {
+    setState(() {
+      _steps = steps;
+    });
     pUser.setSteps(steps);
+
+    // Sauvegarder dans SharedPreferences aussi
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('steps', steps);
   }
 
   void _initializeWorkmanager() {
@@ -144,45 +172,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void> _logout(BuildContext context) async {
-    try {
-      String token = await PersistanceHandler().getAccessToken();
-      // String body = await JSONHandler().logout(token);
-
-      Response res = await HttpService().makeGetRequestWithToken(getLogout);
-
-      if (res.statusCode == 200) {
-        await PersistanceHandler().delAccessToken();
-        await PersistanceHandler().delUser();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoginOrRegister()),
-        );
-      } else {
-        if (res.statusCode == 401) {
-          await PersistanceHandler().delAccessToken();
-          await PersistanceHandler().delUser();
-          print('logout sctatus code: ${res.statusCode}');
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => LoginOrRegister()),
-          );
-          // Token is not valid, already handled in logoutService
-          // Navigator.pushReplacementNamed(context, '/login');
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to logout: ${res.body}')),
-          );
-        }
-      }
-    } catch (e) {
-      print(e.toString());
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('An error occurred. Please try again.')),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -204,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  '$_steps / 10 000 Pas',
+                  '${pUser.user.steps} / 10 000 Pas',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 10),

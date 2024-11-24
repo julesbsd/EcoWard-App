@@ -57,6 +57,7 @@ class _GraphicPageState extends State<GraphicPage> {
     if (res.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(res.body);
       final List<dynamic> weekSteps = responseData['weekSteps'];
+      inspect(weekSteps);
 
       setState(() {
         _weekSteps = weekSteps;

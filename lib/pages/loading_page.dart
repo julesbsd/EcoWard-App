@@ -38,18 +38,14 @@ class _LoadingPageState extends State<LoadingPage> {
 
       if (res.statusCode == 200) {
         final Map<String, dynamic> responseData = jsonDecode(res.body);
-        final int steps = responseData['steps'];
-        final int points = responseData['points'];
+        // final int steps = responseData['steps'];
+        // final int points = responseData['points'];
         final Map<String, dynamic> userData = responseData['user'];
 
         User user = User.fromJson(userData);
         pUser.setUser(user);
-        pUser.setSteps(steps);
-        pUser.setPoints(points);
+        // pUser.setPoints(points);
 
-        // Provider.of<UserProvider>(context, listen: false).setUser(user);
-        // Provider.of<UserProvider>(context, listen: false).setSteps(steps);
-        // User? getUser = await pUser.getUser;
 
         User? getUser = await pUser.getUser;
         Navigator.pushReplacement(
