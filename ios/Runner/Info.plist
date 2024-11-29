@@ -28,6 +28,33 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSMotionUsageDescription</key>
+<string>This application tracks your steps</string>
+<key>UIBackgroundModes</key>
+<array>
+    <string>processing</string>
+</array>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>This app needs access to location when open.</string>
+<key>UIBackgroundModes</key>
+<array>
+	<string>processing</string>
+
+	<!-- If you need periodic tasks in iOS 13+ you need to enable Background Fetch as well -->
+	<string>fetch</string>
+</array>
+<key>NSCameraUsageDescription</key>
+<string>$(PRODUCT_NAME) camera use</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>$(PRODUCT_NAME) photo use</string>
+
+<key>BGTaskSchedulerPermittedIdentifiers</key>
+<array>
+	<string>task-identifier</string>
+
+	<!-- Register a periodic task in iOS 13+ -->
+	<string>be.tramckrijte.workmanagerExample.iOSBackgroundAppRefresh</string>
+</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -21,9 +21,20 @@ class MyButton extends StatelessWidget {
       child: Container(
         height: 60,
         decoration: BoxDecoration(
-          // color: Theme.of(context).colorScheme.inversePrimary,
           color: color,
           borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white,
+              offset: Offset(-6.0, -6.0),
+              blurRadius: 16.0,
+            ),
+            BoxShadow(
+              color: Colors.grey.shade500,
+              offset: Offset(5.0, 6.0),
+              blurRadius: 6.0,
+            ),
+          ],
         ),
         padding: const EdgeInsets.all(5),
         child: Center(

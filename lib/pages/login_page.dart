@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: 200,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.grey[100], // Fond pour mieux voir le logo
+                    color: Colors.grey[100],
                     boxShadow: [
                       BoxShadow(
                         color: Theme.of(context).colorScheme.shadow,
