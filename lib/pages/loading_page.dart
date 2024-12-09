@@ -43,8 +43,8 @@ class _LoadingPageState extends State<LoadingPage> {
         final Map<String, dynamic> userData = responseData['user'];
 
         User user = User.fromJson(userData);
+        inspect(user);
         pUser.setUser(user);
-        // pUser.setPoints(points);
 
 
         User? getUser = await pUser.getUser;

@@ -1,9 +1,13 @@
+import 'dart:developer';
+
+import 'package:ecoward/model/action.dart';
+
 class User {
   int id;
   String name;
   String email;
   String profile_photo_url;
-  List<dynamic> actions;
+  List<Action> actions;
   int steps;
   int points;
 
@@ -26,7 +30,7 @@ class User {
       'role': '',
       'profile_photo_url': profile_photo_url,
       'company': '',
-      'actions': actions,
+      'actions': actions.map((action) => action.toJson()).toList(),
       'steps': steps,
       'points': points,
     };
@@ -34,13 +38,16 @@ class User {
 
   // Fonction pour créer un User à partir d'un JSON
   factory User.fromJson(Map<String, dynamic> json) {
+    inspect(json);
     return User(
       id: json['id'],
       name: json['name'],
       email: json['email'],
       profile_photo_url: json['profile_photo_url'] ?? '',
-      actions: List<dynamic>.from(json['actions'] ?? []),
-      steps: json['steps'] ?? 0,
+      actions: (json['actions'] as List<dynamic>?)
+              ?.map((actionJson) => Action.fromJson(actionJson))
+              .toList() ??
+          [],      steps: json['steps'] ?? 0,
       points: json['points'] ?? 0,
     );
   }

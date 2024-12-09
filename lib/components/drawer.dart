@@ -1,4 +1,5 @@
 import 'package:ecoward/pages/friends_page.dart';
+import 'package:ecoward/pages/graphic_page.dart';
 import 'package:ecoward/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -96,6 +97,25 @@ class DrawerComponent {
                         .bodyLarge!
                         .copyWith(fontSize: 18)),
                 onTap: () {},
+              ),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: Colors.black,
+                  radius: 20,
+                  child: Icon(Icons.table_bar, color: Colors.yellow, size: 24),
+                ),
+                title: Text('Statistiques',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontSize: 18)),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const GraphicPage()),
+                  );
+                },
               ),
               ListTile(
                 leading: CircleAvatar(

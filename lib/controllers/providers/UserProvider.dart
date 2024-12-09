@@ -30,4 +30,8 @@ class UserProvider with ChangeNotifier {
   User get getUser {
     return user;
   }
+
+  List<dynamic> get getActions {
+    return user.actions;
+  }
 }

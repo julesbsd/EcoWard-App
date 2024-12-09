@@ -6,6 +6,7 @@ import 'package:ecoward/controllers/providers/PageProvider.dart';
 import 'package:ecoward/controllers/providers/UserProvider.dart';
 import 'package:ecoward/global/routes.dart';
 import 'package:ecoward/pages/action_page.dart';
+import 'package:ecoward/pages/calendar_page.dart';
 import 'package:ecoward/pages/challenge_page.dart';
 import 'package:ecoward/pages/graphic_page.dart';
 import 'package:ecoward/pages/home_page.dart';
@@ -32,7 +33,7 @@ class _MenuState extends State<Menu> {
     const ChallengePage(),
     const ActionPage(),
     RankingPage(),
-    const GraphicPage(),
+    CalendarPage(),
       ];
 
   final List<String> pages = [
