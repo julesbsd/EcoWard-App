@@ -108,7 +108,7 @@ class DrawerComponent {
                 leading: CircleAvatar(
                   backgroundColor: Colors.black,
                   radius: 20,
-                  child: Icon(Icons.analytics, color: Colors.yellow, size: 24),
+                  child: Icon(Icons.calendar_month, color: Colors.yellow, size: 24),
                 ),
                 title: Text('Calendar',
                     style: Theme.of(context)
