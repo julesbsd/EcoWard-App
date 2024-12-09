@@ -89,6 +89,11 @@ class _GraphicPageState extends State<GraphicPage> {
 @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Profil'),
+        // backgroundColor: Color.fromRGBO(0, 230, 118, 1),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
       body: Padding(
         padding: const EdgeInsets.only(top: 30, left: 40, right: 10),
         child: Container(

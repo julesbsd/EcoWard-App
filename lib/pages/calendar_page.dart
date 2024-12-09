@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:ecoward/components/calendar_tile.dart';
 import 'package:ecoward/controllers/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,15 +38,21 @@ class _CalendarPageState extends State<CalendarPage> {
         .toList();
   }
 
+  int _getActionCountForDay(DateTime day) {
+    return _getActionsForDay(day).length;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final actionsForSelectedDay = _selectedDay != null ? _getActionsForDay(_selectedDay!) : [];
+    final actionsForSelectedDay =
+        _selectedDay != null ? _getActionsForDay(_selectedDay!) : [];
 
     return Scaffold(
-      // appBar: AppBar(
-
-      //   title: Text('TableCalendar - Basics'),
-      // ),
+      appBar: AppBar(
+        title: Text('Historique'),
+        // backgroundColor: Color.fromRGBO(0, 230, 118, 1),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
       body: Column(
         children: [
           TableCalendar(
@@ -67,6 +74,35 @@ class _CalendarPageState extends State<CalendarPage> {
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
+            calendarBuilders: CalendarBuilders(
+              markerBuilder: (context, day, events) {
+                final actionCount = _getActionCountForDay(day);
+                if (actionCount > 0) {
+                  return Positioned(
+                    right: 1,
+                    bottom: 1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      width: 16,
+                      height: 16,
+                      child: Center(
+                        child: Text(
+                          '$actionCount',
+                          style: TextStyle().copyWith(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+                return null;
+              },
+            ),
           ),
           Expanded(
             child: actionsForSelectedDay.isEmpty
@@ -75,16 +111,11 @@ class _CalendarPageState extends State<CalendarPage> {
                     itemCount: actionsForSelectedDay.length,
                     itemBuilder: (context, index) {
                       final action = actionsForSelectedDay[index];
-                      return ListTile(
-                        title: Text('ID: ${action['id']}'),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Status: ${action['status']}'),
-                            Text('Location: ${action['location']}'),
-                          ],
-                        ),
-                      );
+                      return CalendarTile(
+                          status: action['status'],
+                          points: action['points'],
+                          quantity: action['quantity'],
+                          trashname: action['trashname']);
                     },
                   ),
           ),

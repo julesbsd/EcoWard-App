@@ -1,3 +1,4 @@
+import 'package:ecoward/pages/calendar_page.dart';
 import 'package:ecoward/pages/friends_page.dart';
 import 'package:ecoward/pages/graphic_page.dart';
 import 'package:ecoward/pages/profile_page.dart';
@@ -58,8 +59,7 @@ class DrawerComponent {
           child: ListView(
             children: [
               DrawerHeader(
-                child:
-                    Image.asset(
+                child: Image.asset(
                   'lib/assets/ecoward_logo.png',
                   width: 20,
                 ),
@@ -89,20 +89,7 @@ class DrawerComponent {
                 leading: CircleAvatar(
                   backgroundColor: Colors.black,
                   radius: 20,
-                  child: Icon(Icons.history, color: Colors.yellow, size: 24),
-                ),
-                title: Text('Mon historique des actions',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontSize: 18)),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  radius: 20,
-                  child: Icon(Icons.table_bar, color: Colors.yellow, size: 24),
+                  child: Icon(Icons.analytics, color: Colors.yellow, size: 24),
                 ),
                 title: Text('Statistiques',
                     style: Theme.of(context)
@@ -114,6 +101,24 @@ class DrawerComponent {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const GraphicPage()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: Colors.black,
+                  radius: 20,
+                  child: Icon(Icons.analytics, color: Colors.yellow, size: 24),
+                ),
+                title: Text('Calendar',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontSize: 18)),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CalendarPage()),
                   );
                 },
               ),

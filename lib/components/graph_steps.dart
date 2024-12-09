@@ -53,7 +53,7 @@ class GraphStepsState extends State<GraphSteps> {
                 ),
               ),
               const SizedBox(
-                height: 12,
+                height: 10,
               ),
             ],
           ),

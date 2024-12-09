@@ -30,18 +30,18 @@ class _MenuState extends State<Menu> {
 
   final List<Widget> _widgetOptions = <Widget>[
     const HomePage(),
-    const ChallengePage(),
+    // const ChallengePage(),
     const ActionPage(),
     RankingPage(),
-    CalendarPage(),
+    // CalendarPage(),
       ];
 
   final List<String> pages = [
     'Home',
-    'Défi',
+    // 'Défi',
     'Action',
     'Classement ',
-    'Statistiques',
+    // 'Statistiques',
   ];
 
   @override
@@ -131,31 +131,31 @@ class _MenuState extends State<Menu> {
                 color: pPage.getIndex() == 0
                     ? const Color.fromRGBO(0, 230, 118, 1)
                     : Colors.black),
-            Icon(Icons.bolt,
+            // Icon(Icons.bolt,
+            //     size: 30,
+            //     color: pPage.getIndex() == 1
+            //         ? const Color.fromRGBO(0, 230, 118, 1)
+            //         : Colors.black),
+            Icon(Icons.add,
                 size: 30,
                 color: pPage.getIndex() == 1
                     ? const Color.fromRGBO(0, 230, 118, 1)
                     : Colors.black),
-            Icon(Icons.add,
+            Icon(Icons.emoji_events,
                 size: 30,
                 color: pPage.getIndex() == 2
                     ? const Color.fromRGBO(0, 230, 118, 1)
                     : Colors.black),
-            Icon(Icons.emoji_events,
-                size: 30,
-                color: pPage.getIndex() == 3
-                    ? const Color.fromRGBO(0, 230, 118, 1)
-                    : Colors.black),
-            Icon(Icons.person,
-                size: 30,
-                color: pPage.getIndex() == 4
-                    ? const Color.fromRGBO(0, 230, 118, 1)
-                    : Colors.black),
+            // Icon(Icons.person,
+            //     size: 30,
+            //     color: pPage.getIndex() == 4
+            //         ? const Color.fromRGBO(0, 230, 118, 1)
+            //         : Colors.black),
           ],
           color: const Color.fromRGBO(0, 230, 118, 1),
           buttonBackgroundColor: Colors.black,
-          backgroundColor: Colors.white,
-          animationCurve: Curves.easeInOut,
+          backgroundColor: const Color.fromRGBO(0, 230, 118, 1),
+          // animationCurve: Curves.easeInOut,
           animationDuration: const Duration(milliseconds: 150),
           onTap: (selectedIndex) {
             setState(() {
