@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   late UserProvider pUser;
 
   final TextEditingController emailController =
-      TextEditingController(text: 'stan43@example.com');
+      TextEditingController(text: 'otha.batz@example.com');
 
   final TextEditingController passwordController =
       TextEditingController(text: 'password');

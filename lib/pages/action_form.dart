@@ -16,8 +16,9 @@ import 'package:provider/provider.dart';
 
 class ActionForm extends StatefulWidget {
   final int trashId;
+  final int challengeId;
 
-  const ActionForm({super.key, required this.trashId});
+  const ActionForm({super.key, required this.trashId, required this.challengeId});
 
   @override
   State<ActionForm> createState() => _ActionFormState();
@@ -163,6 +164,7 @@ class _ActionFormState extends State<ActionForm> {
 
     String body = await JSONHandler().sendAction(
       widget.trashId,
+      widget.challengeId, 
       quantity,
       base64ImageTop,
       base64ImageBottom,

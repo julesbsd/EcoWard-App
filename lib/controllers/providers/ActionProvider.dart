@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ActionProvider with ChangeNotifier {
   int trash = 0;
+  int challenge = 0;
   // image base64
   List<String> images = [];
   // location
@@ -11,6 +12,11 @@ class ActionProvider with ChangeNotifier {
 
   void setTrash(int newTrash) {
     trash = newTrash;
+    notifyListeners();
+  }
+
+  void setChallenge(int newChallenge) {
+    challenge = newChallenge;
     notifyListeners();
   }
 
@@ -33,6 +39,10 @@ class ActionProvider with ChangeNotifier {
   int get getTrash {
     return trash;
   }
+  
+  int get getChallenge {
+    return challenge;
+  }
 
   List<String> get getImages {
     return images;
@@ -52,6 +62,7 @@ class ActionProvider with ChangeNotifier {
 
   void clear() {
     trash = 0;
+    challenge = 0;
     images = [];
     latitude = 0.0;
     longitude = 0.0;

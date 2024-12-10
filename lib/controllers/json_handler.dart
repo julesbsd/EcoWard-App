@@ -67,10 +67,11 @@ class JSONHandler {
     return jsonEncode(parameters);
   }
 
-  Future<dynamic> sendAction(int trashId, int quantity, String imageTop,
+  Future<dynamic> sendAction(int trashId, int challengeId, int quantity, String imageTop,
       String imageBottom, double latitude, double longitude) async {
     Map<String, dynamic> parameters = {
       "trashId": trashId,
+      "challengeId": challengeId,
       "quantity": quantity,
       "imageTop": imageTop,
       "imageBottom": imageBottom,

@@ -12,7 +12,7 @@ String getFriends = "$serverurl/friends";
 String removeFriend = "$serverurl/friends/remove";
 String addNewFriend = "$serverurl/friends/add";
 
-String getTrashes = "$serverurl/trashes";
+String getChallenges = "$serverurl/challenges";
 
 String getWeekSteps = "$serverurl/user/weekSteps";
 

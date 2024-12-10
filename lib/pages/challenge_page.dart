@@ -62,6 +62,9 @@ class ChallengePage extends StatelessWidget {
                     final item = challenge[index];
                     return ChallengeTile(
                       challenge: item,
+                      onTap: () {
+                        // Navigator.pushNamed(context, Routes.action);
+                      },
                     );
                   },
                 ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:ecoward/components/challenge_tile.dart';
 import 'package:ecoward/controllers/providers/ActionProvider.dart';
 import 'package:ecoward/global/routes.dart';
 import 'package:ecoward/http/http_service.dart';
@@ -16,29 +17,29 @@ class ActionPage extends StatefulWidget {
 }
 
 class _ActionPageState extends State<ActionPage> {
-  late List<dynamic> _trashes;
+  late List<dynamic> _challenges;
   bool _isLoading = true;
   late ActionProvider pAction;
 
   @override
   void initState() {
     super.initState();
-    _loadTrashes();
+    _loadChallenges();
     pAction = Provider.of<ActionProvider>(context, listen: false);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showBottomSheet();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _showBottomSheet();
+    // });
   }
 
-  Future<void> _loadTrashes() async {
-    Response res = await HttpService().makeGetRequestWithToken(getTrashes);
+  Future<void> _loadChallenges() async {
+    Response res = await HttpService().makeGetRequestWithToken(getChallenges);
     if (res.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(res.body);
-      final List<dynamic> trashes = responseData['trashes'];
+      final List<dynamic> challenges = responseData['challenges'];
 
       setState(() {
-        _trashes = trashes;
+        _challenges = challenges;
         _isLoading = false; // Fin du chargement de la requête
       });
     } else {
@@ -135,43 +136,63 @@ class _ActionPageState extends State<ActionPage> {
               // width: 400,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ListView.builder(
-                  itemCount: _trashes.length,
+                child: 
+                ListView.builder(
+                  itemCount: _challenges.length,
                   itemBuilder: (context, index) {
-                    final item = _trashes[index];
-                    return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 10.0),
-                        leading: Image.network(
-                        '$serverImgUrl${item['image']}',
-                        width: 80, // Taille plus grande de l'icône
-                        height: 80,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                          'lib/assets/ecoward_logo.png',
-                          width: 80,
-                          height: 80,
-                          );
-                        },
-                        ),
-                      title: Text(
-                        item['name'],
-                        style: const TextStyle(
-                          fontSize: 20, // Taille du texte plus grande
-                        ),
-                      ),
+                    final challenge = _challenges[index];
+                    return ChallengeTile(
+                      challenge: challenge,
                       onTap: () {
-                        pAction.setTrash(item['id']);
-                        print('${item['name']} cliqué, id : ${item['id']}');
+                        pAction.setTrash(7);
+                        pAction.setChallenge(challenge['id']);
+                        log('${challenge['name']} cliqué, id : ${challenge['id']}');
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                                builder: (context) => ActionForm(trashId: item['id'])),
+                            builder: (context) => ActionForm(trashId: challenge['id'], challengeId: challenge['id'])),
                         );
                       },
                     );
                   },
                 ),
+                // ListView.builder(
+                //   itemCount: _challenges.length,
+                //   itemBuilder: (context, index) {
+                //     final item = _challenges[index];
+                //     return ListTile(
+                //       contentPadding: const EdgeInsets.symmetric(
+                //           vertical: 10.0, horizontal: 10.0),
+                //         leading: Image.network(
+                //         '$serverImgUrl${item['image']}',
+                //         width: 80, // Taille plus grande de l'icône
+                //         height: 80,
+                //         errorBuilder: (context, error, stackTrace) {
+                //           return Image.asset(
+                //           'lib/assets/ecoward_logo.png',
+                //           width: 80,
+                //           height: 80,
+                //           );
+                //         },
+                //         ),
+                //       title: Text(
+                //         item['name'],
+                //         style: const TextStyle(
+                //           fontSize: 20, // Taille du texte plus grande
+                //         ),
+                //       ),
+                //       onTap: () {
+                //         pAction.setTrash(item['id']);
+                //         print('${item['name']} cliqué, id : ${item['id']}');
+                //         Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //                 builder: (context) => ActionForm(trashId: item['id'])),
+                //         );
+                //       },
+                //     );
+                //   },
+                // ),
               ),
             ),
     );
