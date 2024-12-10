@@ -21,7 +21,7 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+  DateTime? _selectedDay = DateTime.now();
 
   List<dynamic> _getActionsForDay(DateTime day) {
     return pUser.getActions
@@ -49,64 +49,72 @@ class _CalendarPageState extends State<CalendarPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Historique'),
+        title: Text('Calendrier'),
         // backgroundColor: Color.fromRGBO(0, 230, 118, 1),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Column(
         children: [
-          TableCalendar(
-            locale: Localizations.localeOf(context).toString(),
-            firstDay: DateTime(2010, 1, 1),
-            lastDay: DateTime(2030, 3, 14),
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              if (!isSameDay(_selectedDay, selectedDay)) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-            calendarBuilders: CalendarBuilders(
-              markerBuilder: (context, day, events) {
-                final actionCount = _getActionCountForDay(day);
-                if (actionCount > 0) {
-                  return Positioned(
-                    right: 1,
-                    bottom: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      width: 16,
-                      height: 16,
-                      child: Center(
-                        child: Text(
-                          '$actionCount',
-                          style: TextStyle().copyWith(
-                            color: Colors.white,
-                            fontSize: 12,
+          Container(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: TableCalendar(
+              locale: Localizations.localeOf(context).toString(),
+              headerStyle: HeaderStyle(
+                formatButtonVisible: false,
+                titleCentered: true
+              ),
+              firstDay: DateTime(2010, 1, 1),
+              lastDay: DateTime(2030, 3, 14),
+              focusedDay: _focusedDay,
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              onDaySelected: (selectedDay, focusedDay) {
+                if (!isSameDay(_selectedDay, selectedDay)) {
+                  setState(() {
+                    _selectedDay = selectedDay;
+                    _focusedDay = focusedDay;
+                  });
+                }
+              },
+              onPageChanged: (focusedDay) {
+                _focusedDay = focusedDay;
+              },
+              calendarBuilders: CalendarBuilders(
+                markerBuilder: (context, day, events) {
+                  final actionCount = _getActionCountForDay(day);
+                  if (actionCount > 0) {
+                    return Positioned(
+                      right: 1,
+                      bottom: 1,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        width: 16,
+                        height: 16,
+                        child: Center(
+                          child: Text(
+                            '$actionCount',
+                            style: TextStyle().copyWith(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }
-                return null;
-              },
+                    );
+                  }
+                  return null;
+                },
+              ),
             ),
           ),
+          SizedBox(height: 20),
           Expanded(
             child: actionsForSelectedDay.isEmpty
-                ? Center(child: Text('Aucune action'))
+                ? Center(child: Text('Aucune action réalisée'))
                 : ListView.builder(
                     itemCount: actionsForSelectedDay.length,
                     itemBuilder: (context, index) {
