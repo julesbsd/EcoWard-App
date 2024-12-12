@@ -1,14 +1,10 @@
 import 'dart:developer';
 
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:ecoward/components/drawer.dart';
 import 'package:ecoward/controllers/providers/PageProvider.dart';
 import 'package:ecoward/controllers/providers/UserProvider.dart';
 import 'package:ecoward/global/routes.dart';
 import 'package:ecoward/pages/action_page.dart';
-import 'package:ecoward/pages/calendar_page.dart';
-import 'package:ecoward/pages/challenge_page.dart';
-import 'package:ecoward/pages/graphic_page.dart';
 import 'package:ecoward/pages/home_page.dart';
 import 'package:ecoward/pages/ranking_page.dart';
 import 'package:flutter/material.dart';
@@ -25,23 +21,18 @@ class _MenuState extends State<Menu> {
   String image = '';
   late UserProvider pUser;
   late Pageprovider pPage;
-  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   final List<Widget> _widgetOptions = <Widget>[
     const HomePage(),
-    // const ChallengePage(),
     const ActionPage(),
     RankingPage(),
-    // CalendarPage(),
-      ];
+  ];
 
   final List<String> pages = [
     'Home',
-    // 'Défi',
     'Action',
-    'Classement ',
-    // 'Statistiques',
+    'Classement',
   ];
 
   @override
@@ -64,43 +55,43 @@ class _MenuState extends State<Menu> {
           title: Text(
             pages[pPage.getIndex()],
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
           ),
           actions: [
             IconButton(
               onPressed: () {
-          // Navigator.pushNamed(context, Routes.notification);
+                // Navigator.pushNamed(context, Routes.notification);
               },
               icon: const Icon(
-          Icons.notifications,
-          color: Colors.black,
+                Icons.notifications,
+                color: Colors.black,
               ),
             ),
             GestureDetector(
               onTap: () {
-          scaffoldKey.currentState?.openDrawer();
+                scaffoldKey.currentState?.openDrawer();
               },
               child: Padding(
-          padding: const EdgeInsets.only(right: 10.0), // Add padding to the right
-          child: ClipOval(
-            child: Image.network(
-              image.isNotEmpty
-            ? image
-            : '$serverImgUrl${pUser.user.profile_photo_url}',
-              width: 40,
-              height: 40,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return const Icon(
-            Icons.account_circle,
-            size: 40,
-            color: Colors.grey,
-                );
-              },
-            ),
-          ),
+                padding: const EdgeInsets.only(right: 10.0),
+                child: ClipOval(
+                  child: Image.network(
+                    image.isNotEmpty
+                        ? image
+                        : '$serverImgUrl${pUser.user.profile_photo_url}',
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(
+                        Icons.account_circle,
+                        size: 40,
+                        color: Colors.grey,
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
           ],
@@ -109,7 +100,6 @@ class _MenuState extends State<Menu> {
         body: Padding(
           padding: const EdgeInsets.all(0),
           child: SingleChildScrollView(
-            // Ajout de SingleChildScrollView pour rendre la page défilable
             child: Column(
               children: [
                 Container(
@@ -121,48 +111,55 @@ class _MenuState extends State<Menu> {
             ),
           ),
         ),
-        bottomNavigationBar: CurvedNavigationBar(
-          height: 60,
-          key: _bottomNavigationKey,
-          index: pPage.getIndex(),
-          items: <Widget>[
-            Icon(Icons.home,
-                size: 30,
-                color: pPage.getIndex() == 0
-                    ? const Color.fromRGBO(0, 230, 118, 1)
-                    : Colors.black),
-            // Icon(Icons.bolt,
-            //     size: 30,
-            //     color: pPage.getIndex() == 1
-            //         ? const Color.fromRGBO(0, 230, 118, 1)
-            //         : Colors.black),
-            Icon(Icons.add,
-                size: 30,
-                color: pPage.getIndex() == 1
-                    ? const Color.fromRGBO(0, 230, 118, 1)
-                    : Colors.black),
-            Icon(Icons.emoji_events,
-                size: 30,
-                color: pPage.getIndex() == 2
-                    ? const Color.fromRGBO(0, 230, 118, 1)
-                    : Colors.black),
-            // Icon(Icons.person,
-            //     size: 30,
-            //     color: pPage.getIndex() == 4
-            //         ? const Color.fromRGBO(0, 230, 118, 1)
-            //         : Colors.black),
-          ],
-          color: const Color.fromRGBO(0, 230, 118, 1),
-          buttonBackgroundColor: Colors.black,
-          backgroundColor: const Color.fromRGBO(0, 230, 118, 1),
-          // animationCurve: Curves.easeInOut,
-          animationDuration: const Duration(milliseconds: 150),
-          onTap: (selectedIndex) {
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.grey.shade200,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  size: 30,
+                  Icons.home,
+                  color: pPage.getIndex() == 0
+                      ? const Color.fromRGBO(0, 230, 118, 1)
+                      : Colors.black,
+                ),
+                onPressed: () {
+                  setState(() {
+                    pPage.setIndex(0);
+                  });
+                },
+              ),
+              const SizedBox(width: 40), // The dummy child for spacing
+              IconButton(
+                icon: Icon(
+                  size: 30,
+                  Icons.emoji_events,
+                  color: pPage.getIndex() == 2
+                      ? const Color.fromRGBO(0, 230, 118, 1)
+                      : Colors.black,
+                ),
+                onPressed: () {
+                  setState(() {
+                    pPage.setIndex(2);
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
             setState(() {
-              pPage.setIndex(selectedIndex);
+              pPage.setIndex(1);
             });
           },
-          letIndexChange: (index) => true,
+          child: const Icon(Icons.add, size: 40,),
+          backgroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
         ),
       ),
     );
