@@ -52,15 +52,17 @@ class _ActionPageState extends State<ActionPage> {
   void _showBottomSheet() {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
           color: Colors.white,
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(5.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               // Ligne d'avertissement
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   Icon(
                     Icons.warning,
@@ -104,8 +106,8 @@ class _ActionPageState extends State<ActionPage> {
                       children: [
                         Image.asset(
                           'lib/assets/gants.png',
-                          width: 40,
-                          height: 40,
+                          width: 80,
+                          height: 80,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
@@ -137,8 +139,8 @@ class _ActionPageState extends State<ActionPage> {
                       children: [
                         Image.asset(
                           'lib/assets/masque.png',
-                          width: 40,
-                          height: 40,
+                          width: 80,
+                          height: 80,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
@@ -170,8 +172,8 @@ class _ActionPageState extends State<ActionPage> {
                       children: [
                         Image.asset(
                           'lib/assets/poubelle-gants.png',
-                          width: 40,
-                          height: 40,
+                          width: 80,
+                          height: 80,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
@@ -201,13 +203,16 @@ class _ActionPageState extends State<ActionPage> {
               const SizedBox(height: 24),
 
               // Bouton de confirmation
-              ElevatedButton(
+                            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: const Text(
                   'Confirmer et procéder au ramassage',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],

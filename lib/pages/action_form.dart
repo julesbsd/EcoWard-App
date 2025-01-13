@@ -254,10 +254,10 @@ class _ActionFormState extends State<ActionForm> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(width: 50),
-                    Image.asset('lib/assets/ecobudy.png', width: 120),
+                    Image.asset('lib/assets/bonjour.png', width: 160),
                   ],
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
