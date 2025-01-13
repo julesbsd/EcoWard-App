@@ -223,6 +223,10 @@ class _HomePageState extends State<HomePage> {
                     width: MediaQuery.of(context).size.width,
                   ),
                 ),
+                Container(
+                  child: Image.asset('lib/assets/homePage2.png',
+                      width: MediaQuery.of(context).size.width),
+                )
               ],
             ),
           ),

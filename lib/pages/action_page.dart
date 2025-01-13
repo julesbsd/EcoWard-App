@@ -27,9 +27,9 @@ class _ActionPageState extends State<ActionPage> {
     _loadChallenges();
     pAction = Provider.of<ActionProvider>(context, listen: false);
 
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _showBottomSheet();
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showBottomSheet();
+    });
   }
 
   Future<void> _loadChallenges() async {
@@ -59,6 +59,7 @@ class _ActionPageState extends State<ActionPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              // Ligne d'avertissement
               Row(
                 children: const [
                   Icon(
@@ -67,17 +68,27 @@ class _ActionPageState extends State<ActionPage> {
                     size: 50,
                   ),
                   SizedBox(width: 8),
-                  Text('Avertissement !',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(
+                    'Avertissement !',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
+
               const SizedBox(height: 16),
+
+              // Texte principal
               const Text(
                 'As-tu le bon équipement pour ramasser tes déchets ?',
                 style: TextStyle(fontSize: 16),
               ),
+
               const SizedBox(height: 16),
+
+              // Zone grisée avec nos trois items (gants, masque, sac)
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -86,28 +97,110 @@ class _ActionPageState extends State<ActionPage> {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('🧤 Gants',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
-                    Text(
-                        'Porte constamment des gants pour te protéger des coupures et des éraflures.'),
-                    SizedBox(height: 10),
-                    Text('😷 Masque',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
-                    Text(
-                        'En portant des masques, il est crucial de se protéger.'),
-                    SizedBox(height: 10),
-                    Text('🗑️ Sac de transport',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
-                    Text(
-                        'N\'oublie pas d\'emporter un sac poubelle pour transporter tous tes déchets.'),
+                  children: [
+                    // 1) Gants
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'lib/assets/gants.png',
+                          width: 40,
+                          height: 40,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Gants',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Porte constamment des gants pour te protéger '
+                                'des coupures et des éraflures.',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // 2) Masque
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'lib/assets/masque.png',
+                          width: 40,
+                          height: 40,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Masque',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'En portant des masques, il est crucial '
+                                'de se protéger.',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // 3) Sac de transport
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'lib/assets/poubelle-gants.png',
+                          width: 40,
+                          height: 40,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Sac de transport',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'N\'oublie pas d\'emporter un sac poubelle '
+                                'pour transporter tous tes déchets.',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
+
               const SizedBox(height: 24),
+
+              // Bouton de confirmation
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -136,8 +229,7 @@ class _ActionPageState extends State<ActionPage> {
               // width: 400,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: 
-                ListView.builder(
+                child: ListView.builder(
                   itemCount: _challenges.length,
                   itemBuilder: (context, index) {
                     final challenge = _challenges[index];
@@ -150,7 +242,9 @@ class _ActionPageState extends State<ActionPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ActionForm(trashId: challenge['id'], challengeId: challenge['id'])),
+                              builder: (context) => ActionForm(
+                                  trashId: challenge['id'],
+                                  challengeId: challenge['id'])),
                         );
                       },
                     );
