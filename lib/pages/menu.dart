@@ -48,54 +48,54 @@ class _MenuState extends State<Menu> {
       canPop: false,
       child: Scaffold(
         key: scaffoldKey,
-        appBar: AppBar(
-          leading: Container(),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          centerTitle: true,
-          title: Text(
-            pages[pPage.getIndex()],
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                // Navigator.pushNamed(context, Routes.notification);
-              },
-              icon: const Icon(
-                Icons.notifications,
-                color: Colors.black,
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                scaffoldKey.currentState?.openDrawer();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: ClipOval(
-                  child: Image.network(
-                    image.isNotEmpty
-                        ? image
-                        : '$serverImgUrl${pUser.user.profile_photo_url}',
-                    width: 40,
-                    height: 40,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(
-                        Icons.account_circle,
-                        size: 40,
-                        color: Colors.grey,
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+        // appBar: AppBar(
+        //   leading: Container(),
+        //   backgroundColor: Theme.of(context).colorScheme.primary,
+        //   centerTitle: true,
+        //   title: Text(
+        //     pages[pPage.getIndex()],
+        //     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        //       fontWeight: FontWeight.bold,
+        //       fontSize: 20,
+        //     ),
+        //   ),
+        //   actions: [
+        //     IconButton(
+        //       onPressed: () {
+        //         // Navigator.pushNamed(context, Routes.notification);
+        //       },
+        //       icon: const Icon(
+        //         Icons.notifications,
+        //         color: Colors.black,
+        //       ),
+        //     ),
+        //     GestureDetector(
+        //       onTap: () {
+        //         scaffoldKey.currentState?.openDrawer();
+        //       },
+        //       child: Padding(
+        //         padding: const EdgeInsets.only(right: 10.0),
+        //         child: ClipOval(
+        //           child: Image.network(
+        //             image.isNotEmpty
+        //                 ? image
+        //                 : '$serverImgUrl${pUser.user.profile_photo_url}',
+        //             width: 40,
+        //             height: 40,
+        //             fit: BoxFit.cover,
+        //             errorBuilder: (context, error, stackTrace) {
+        //               return const Icon(
+        //                 Icons.account_circle,
+        //                 size: 40,
+        //                 color: Colors.grey,
+        //               );
+        //             },
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
         drawer: DrawerComponent.buildMenuDrawer(context),
         body: Padding(
           padding: const EdgeInsets.all(0),

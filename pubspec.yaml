@@ -52,6 +52,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  percent_indicator: ^4.2.4
 
 dev_dependencies:
   flutter_test:

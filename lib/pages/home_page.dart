@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:ecoward/pages/calendar_page.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 import '../components/carousel.dart';
 
@@ -50,6 +52,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _initializePedometer() async {
+
     if (await Permission.activityRecognition.request().isGranted) {
       _startPedometer();
     } else {
@@ -173,45 +176,234 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Widget buildPedometerGauge(String title, int steps, {int dailyGoal = 10000}) {
+    double percent = (steps / dailyGoal).clamp(0.0, 1.0);
+    print('percent: $percent');
+    return CircularPercentIndicator(
+      radius: 65,
+      lineWidth: 11.0,
+      percent: percent, // Entre 0.0 et 1.0
+      arcBackgroundColor:
+          Theme.of(context).colorScheme.secondary, // Couleur de fond de l'arc
+      animation: true, // Si vous voulez une animation
+      arcType: ArcType.FULL, // Demi-cercle
+      startAngle: 0,
+      center: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.directions_walk,
+              size: 30.0, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(height: 10),
+          Text(
+            '$steps',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+          ),
+        ],
+      ),
+      header: Text(
+        title,
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+      ),
+      circularStrokeCap: CircularStrokeCap.round,
+      progressColor: Theme.of(context).colorScheme.primary, // Couleur de l’arc
+      backgroundColor: Colors.grey[300]!,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
+          const SizedBox(height: 20),
           Container(
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-            decoration: const BoxDecoration(
-              color: Color.fromRGBO(0, 230, 118, 1),
+            margin: const EdgeInsets.all(20),
+            width: 380,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                // Ombres internes
+                BoxShadow(
+                  color: Color(0xFFBEBEBE), // Couleur de l'ombre foncée
+                  offset: Offset(2, 7),
+                  blurRadius: 7,
+                ),
+                BoxShadow(
+                  color: Colors.white, // Couleur de l'ombre claire
+                  offset: Offset(-7, -7),
+                  blurRadius: 14,
+                ),
+              ],
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                // const SizedBox(height: 10),
-                Text(
-                  '${pUser.user.points} pts',
-                  style: Theme.of(context).textTheme.titleLarge,
+                // --- Avatar + médaille ---
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    ClipOval(
+                      child: Image.network(
+                        image.isNotEmpty
+                            ? image
+                            : '$serverImgUrl${pUser.user.profile_photo_url}',
+                        width: 90,
+                        height: 90,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.account_circle,
+                            size: 60,
+                            color: Colors.grey,
+                          );
+                        },
+                      ),
+                    ),
+                    
+                    // Icône superposée (médaille en bas à droite)
+                    Positioned(
+                      right: -2,
+                      bottom: -2,
+                      child: Container(
+                        padding: const EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 2,
+                            )
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.emoji_events, // Icône médaille
+                          color: Colors.amber,
+                          size: 16,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  '${pUser.user.steps} / 10 000 Pas',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: LinearProgressIndicator(
-                    value: _steps / 10000,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                    minHeight: 25,
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
+
+                const SizedBox(width: 30),
+
+                // --- Textes : Bonjour..., points, classement ---
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Titre (ex: "Bonjour Padideh")
+                      const Text(
+                        "Bonjour Padideh",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+
+                      // Row:  "398 points | 5ème classement"
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Valeur : Points
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:  [
+                              Text(
+                                '${pUser.user.points}',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "points",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          ),
+
+                          // Séparateur vertical
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            width: 1,
+                            height: 30,
+                            color: Colors.grey[300],
+                          ),
+
+                          // Valeur : Classement
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                "5ème",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "classement",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          const CarouselWidget(),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.all(8.0),
+                width: 180,
+                height: 180,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                    )
+                  ],
+                ),
+                child: Center(
+                  child: buildPedometerGauge("Nombre de pas", _steps),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.all(8.0),
+                width: 180,
+                height: 180,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                    )
+                  ],
+                ),
+                child: Center(
+                  child: buildPedometerGauge("Nombre de pas", _steps),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
           Container(
             // padding: const EdgeInsets.all(16),
             child: Column(
