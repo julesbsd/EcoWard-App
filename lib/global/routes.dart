@@ -1,5 +1,5 @@
-String serverurl = "https://www.ecoward.me/api";
-String serverImgUrl = "https://www.ecoward.me/storage/";
+String serverurl = "https://filament.ecoward.me/api";
+String serverImgUrl = "https://filament.ecoward.me/storage/";
 String postLogin = "$serverurl/login";
 String getAutoLogin = "$serverurl/autologin";
 String getLogout = "$serverurl/logout";
