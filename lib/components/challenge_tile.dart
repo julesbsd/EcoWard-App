@@ -7,19 +7,28 @@ class ChallengeTile extends StatelessWidget {
   const ChallengeTile(
       {super.key, required this.challenge, required this.onTap});
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
+          boxShadow: const [
+            // Ombres internes
+            BoxShadow(
+              color: Color(0xFFBEBEBE), // Couleur de l'ombre foncée
+              offset: Offset(5, 5),
+              blurRadius: 5,
+            ),
+          ],
+          color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.grey.shade400),
+          border: Border.all(color: Colors.grey.shade100),
         ),
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-        padding: const EdgeInsets.all(16),
-        child: Column( // Changé de Row à Column pour une meilleure organisation
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          // Changé de Row à Column pour une meilleure organisation
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,8 +48,9 @@ class ChallengeTile extends StatelessWidget {
                       Text(
                         challenge['name'],
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           color: Colors.grey,
+                          fontWeight: FontWeight.bold,
                         ),
                         maxLines: null,
                       ),
@@ -49,22 +59,32 @@ class ChallengeTile extends StatelessWidget {
                 ),
                 Text(
                   '${challenge['progress']['text']}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
                   maxLines: null,
                 ),
+                SizedBox(width: 15),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                  ),
+                )
               ],
             ),
             const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: LinearProgressIndicator(
-                value: challenge['progress']['current'] / challenge['progress']['goal'],
-                backgroundColor: Colors.grey.shade500,
+                value: challenge['progress']['current'] /
+                    challenge['progress']['goal'],
+                backgroundColor: Colors.grey.shade200,
                 color: Theme.of(context).colorScheme.primary,
-                minHeight: 25,
+                minHeight: 20,
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
               ),
             ),

@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-
+import 'package:ecoward/components/drawer.dart';
 import '../components/carousel.dart';
 
 class HomePage extends StatefulWidget {
@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
     'https://picsum.photos/250?image=11',
     'https://picsum.photos/250?image=12',
   ];
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   @override
   void initState() {
@@ -52,7 +53,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _initializePedometer() async {
-
     if (await Permission.activityRecognition.request().isGranted) {
       _startPedometer();
     } else {
@@ -196,13 +196,13 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 10),
           Text(
             '$steps',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ],
       ),
       header: Text(
         title,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+        style: Theme.of(context).textTheme.bodyLarge,
       ),
       circularStrokeCap: CircularStrokeCap.round,
       progressColor: Theme.of(context).colorScheme.primary, // Couleur de l’arc
@@ -212,226 +212,277 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(height: 20),
-          Container(
-            margin: const EdgeInsets.all(20),
-            width: 380,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                // Ombres internes
-                BoxShadow(
-                  color: Color(0xFFBEBEBE), // Couleur de l'ombre foncée
-                  offset: Offset(2, 7),
-                  blurRadius: 7,
+    return Scaffold(
+      key: scaffoldKey,
+      drawer: DrawerComponent.buildMenuDrawer(context),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              clipBehavior:
+                  Clip.none, // pour permettre à l'icône de dépasser si besoin
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(20),
+                  width: 380,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0xFFBEBEBE),
+                        offset: Offset(5, 7),
+                        blurRadius: 5,
+                      ),
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: Offset(-7, -7),
+                        blurRadius: 14,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      // --- Avatar + médaille ---
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          ClipOval(
+                            child: GestureDetector(
+                              onTap: () {
+                                scaffoldKey.currentState?.openDrawer();
+                              },
+                              child: Image.network(
+                                image.isNotEmpty
+                                    ? image
+                                    : '$serverImgUrl${pUser.user.profile_photo_url}',
+                                width: 90,
+                                height: 90,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(
+                                    Icons.account_circle,
+                                    size: 60,
+                                    color: Colors.grey,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: -2,
+                            bottom: -2,
+                            child: Container(
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 2,
+                                  )
+                                ],
+                              ),
+                              child: const Icon(
+                                Icons.emoji_events,
+                                color: Colors.amber,
+                                size: 16,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 30),
+                      // --- Textes ---
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Bonjour Padideh",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: "CaviaDream",
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${pUser.user.points}',
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const Text(
+                                      "points",
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  width: 1,
+                                  height: 30,
+                                  color: Colors.grey[300],
+                                ),
+                                const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "5ème",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      "classement",
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                BoxShadow(
-                  color: Colors.white, // Couleur de l'ombre claire
-                  offset: Offset(-7, -7),
-                  blurRadius: 14,
+                Positioned(
+                  top: 16,
+                  right: 16,
+                  child: Transform.rotate(
+                    angle: 25 * 3.1415926535897932 / 180,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: const Color.fromARGB(255, 255, 244, 144),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.notifications_outlined,
+                          size: 25,
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
-            child: Row(
+            Container(
+              // height: 200,
+              child: Image.asset(
+                'lib/assets/homePageChallenges.png',
+                width: MediaQuery.of(context).size.width,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // --- Avatar + médaille ---
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    ClipOval(
-                      child: Image.network(
-                        image.isNotEmpty
-                            ? image
-                            : '$serverImgUrl${pUser.user.profile_photo_url}',
-                        width: 90,
-                        height: 90,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.account_circle,
-                            size: 60,
-                            color: Colors.grey,
-                          );
-                        },
+                Container(
+                  margin: const EdgeInsets.all(8.0),
+                  width: 180,
+                  height: 180,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: const [
+                      // Ombres internes
+                      BoxShadow(
+                        color: Color(0xFFBEBEBE), // Couleur de l'ombre foncée
+                        offset: Offset(3, 5),
+                        blurRadius: 5,
                       ),
-                    ),
-                    
-                    // Icône superposée (médaille en bas à droite)
-                    Positioned(
-                      right: -2,
-                      bottom: -2,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 2,
-                            )
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.emoji_events, // Icône médaille
-                          color: Colors.amber,
-                          size: 16,
-                        ),
+                      BoxShadow(
+                        color: Colors.white, // Couleur de l'ombre claire
+                        offset: Offset(-7, -7),
+                        blurRadius: 14,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                  child: Center(
+                    child: buildPedometerGauge("Nombre de pas", _steps),
+                  ),
                 ),
-
-                const SizedBox(width: 30),
-
-                // --- Textes : Bonjour..., points, classement ---
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Titre (ex: "Bonjour Padideh")
-                      const Text(
-                        "Bonjour Padideh",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                Container(
+                  margin: const EdgeInsets.all(8.0),
+                  width: 180,
+                  height: 180,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: const [
+                      // Ombres internes
+                      BoxShadow(
+                        color: Color(0xFFBEBEBE), // Couleur de l'ombre foncée
+                        offset: Offset(3, 5),
+                        blurRadius: 5,
                       ),
-                      const SizedBox(height: 8),
-
-                      // Row:  "398 points | 5ème classement"
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // Valeur : Points
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children:  [
-                              Text(
-                                '${pUser.user.points}',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                "points",
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ],
-                          ),
-
-                          // Séparateur vertical
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16),
-                            width: 1,
-                            height: 30,
-                            color: Colors.grey[300],
-                          ),
-
-                          // Valeur : Classement
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                "5ème",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                "classement",
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                        ],
+                      BoxShadow(
+                        color: Colors.white, // Couleur de l'ombre claire
+                        offset: Offset(-7, -7),
+                        blurRadius: 14,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Text(
+                        'CO2 économisé',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      Center(
+                        child: Icon(Icons.cloud_outlined,
+                            size: 100,
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                      Text(
+                        '259 g',
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(8.0),
-                width: 180,
-                height: 180,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                    )
-                  ],
-                ),
-                child: Center(
-                  child: buildPedometerGauge("Nombre de pas", _steps),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(8.0),
-                width: 180,
-                height: 180,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                    )
-                  ],
-                ),
-                child: Center(
-                  child: buildPedometerGauge("Nombre de pas", _steps),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Container(
-            // padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Container(
-                  // height: 200,
-                  child: Image.asset(
-                    'lib/assets/homePage1.png',
-                    width: MediaQuery.of(context).size.width,
+            const SizedBox(height: 20),
+            Container(
+              // padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  const CarouselWidget(),
+                  Container(
+                    child: Image.asset('lib/assets/homePage2.png',
+                        width: MediaQuery.of(context).size.width),
                   ),
-                ),
-                Container(
-                  // height: 200,
-                  child: Image.asset(
-                    'lib/assets/homePage3.png',
-                    width: MediaQuery.of(context).size.width,
+                  Container(
+                    // height: 200,
+                    child: Image.asset(
+                      'lib/assets/homePage3.png',
+                      width: MediaQuery.of(context).size.width,
+                    ),
                   ),
-                ),
-                const CarouselWidget(),
-                Container(
-                  child: Image.asset('lib/assets/homePage2.png',
-                      width: MediaQuery.of(context).size.width),
-                ),
-                const SizedBox(height: 150),
-              ],
+                  const SizedBox(height: 150),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

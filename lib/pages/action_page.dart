@@ -203,7 +203,7 @@ class _ActionPageState extends State<ActionPage> {
               const SizedBox(height: 24),
 
               // Bouton de confirmation
-                            ElevatedButton(
+              ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                 ),
@@ -231,67 +231,36 @@ class _ActionPageState extends State<ActionPage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Container(
-              // width: 400,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ListView.builder(
-                  itemCount: _challenges.length,
-                  itemBuilder: (context, index) {
-                    final challenge = _challenges[index];
-                    return ChallengeTile(
-                      challenge: challenge,
-                      onTap: () {
-                        pAction.setTrash(7);
-                        pAction.setChallenge(challenge['id']);
-                        log('${challenge['name']} cliqué, id : ${challenge['id']}');
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ActionForm(
-                                  trashId: challenge['id'],
-                                  challengeId: challenge['id'])),
-                        );
-                      },
-                    );
-                  },
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: _challenges.length,
+                        itemBuilder: (context, index) {
+                          final challenge = _challenges[index];
+                          return ChallengeTile(
+                            challenge: challenge,
+                            onTap: () {
+                              pAction.setTrash(7);
+                              pAction.setChallenge(challenge['id']);
+                              log('${challenge['name']} cliqué, id : ${challenge['id']}');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ActionForm(
+                                        trashId: challenge['id'],
+                                        challengeId: challenge['id'])),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 80),
+                  ],
                 ),
-                // ListView.builder(
-                //   itemCount: _challenges.length,
-                //   itemBuilder: (context, index) {
-                //     final item = _challenges[index];
-                //     return ListTile(
-                //       contentPadding: const EdgeInsets.symmetric(
-                //           vertical: 10.0, horizontal: 10.0),
-                //         leading: Image.network(
-                //         '$serverImgUrl${item['image']}',
-                //         width: 80, // Taille plus grande de l'icône
-                //         height: 80,
-                //         errorBuilder: (context, error, stackTrace) {
-                //           return Image.asset(
-                //           'lib/assets/ecoward_logo.png',
-                //           width: 80,
-                //           height: 80,
-                //           );
-                //         },
-                //         ),
-                //       title: Text(
-                //         item['name'],
-                //         style: const TextStyle(
-                //           fontSize: 20, // Taille du texte plus grande
-                //         ),
-                //       ),
-                //       onTap: () {
-                //         pAction.setTrash(item['id']);
-                //         print('${item['name']} cliqué, id : ${item['id']}');
-                //         Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //                 builder: (context) => ActionForm(trashId: item['id'])),
-                //         );
-                //       },
-                //     );
-                //   },
-                // ),
               ),
             ),
     );

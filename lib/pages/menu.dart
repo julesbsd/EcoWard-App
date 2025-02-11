@@ -102,6 +102,7 @@ class _MenuState extends State<Menu> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+            const SizedBox(height: 30),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height - 50,
@@ -112,17 +113,17 @@ class _MenuState extends State<Menu> {
           ),
         ),
         bottomNavigationBar: BottomAppBar(
-          color: Colors.grey.shade200,
+          color: Theme.of(context).colorScheme.primary,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               IconButton(
                 icon: Icon(
-                  size: 30,
+                  size: 35,
                   Icons.home,
                   color: pPage.getIndex() == 0
-                      ? const Color.fromRGBO(0, 230, 118, 1)
-                      : Colors.black,
+                      ? Colors.black
+                      : Colors.white,
                 ),
                 onPressed: () {
                   setState(() {
@@ -133,11 +134,11 @@ class _MenuState extends State<Menu> {
               const SizedBox(width: 40), // The dummy child for spacing
               IconButton(
                 icon: Icon(
-                  size: 30,
+                  size: 35,
                   Icons.emoji_events,
                   color: pPage.getIndex() == 2
-                      ? const Color.fromRGBO(0, 230, 118, 1)
-                      : Colors.black,
+                      ? Colors.black
+                      : Colors.white,
                 ),
                 onPressed: () {
                   setState(() {
