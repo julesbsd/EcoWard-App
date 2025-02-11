@@ -55,74 +55,73 @@ class _RankingPageState extends State<RankingPage> {
     return Scaffold(
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isCompanyRanking = true;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        color: isCompanyRanking
-                            ? Colors.black
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.horizontal(
-                          left: Radius.circular(30),
+          Container(
+            decoration: BoxDecoration(),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isCompanyRanking = true;
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        decoration: BoxDecoration(
+                          color: isCompanyRanking
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.white,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            bottomLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                            bottomRight: Radius.circular(30),
+                          ),
                         ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Classement Amis',
-                          style: TextStyle(
-                            color:
-                                isCompanyRanking ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                        child: Center(
+                          child: Text(
+                            'Entreprise',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isCompanyRanking = false;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        color: !isCompanyRanking
-                            ? Colors.black
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.horizontal(
-                          right: Radius.circular(30),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isCompanyRanking = false;
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        decoration: BoxDecoration(
+                          color: !isCompanyRanking
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.white,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            bottomLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                            bottomRight: Radius.circular(30),
+                          ),
                         ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Classement National',
-                          style: TextStyle(
-                            color:
-                                !isCompanyRanking ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                        child: Center(
+                          child: Text(
+                            'National',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Expanded(

@@ -27,9 +27,9 @@ class _ActionPageState extends State<ActionPage> {
     _loadChallenges();
     pAction = Provider.of<ActionProvider>(context, listen: false);
 
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _showBottomSheet();
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showBottomSheet();
+    });
   }
 
   Future<void> _loadChallenges() async {
@@ -52,14 +52,17 @@ class _ActionPageState extends State<ActionPage> {
   void _showBottomSheet() {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
           color: Colors.white,
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(5.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              // Ligne d'avertissement
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   Icon(
                     Icons.warning,
@@ -67,17 +70,27 @@ class _ActionPageState extends State<ActionPage> {
                     size: 50,
                   ),
                   SizedBox(width: 8),
-                  Text('Avertissement !',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(
+                    'Avertissement !',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
+
               const SizedBox(height: 16),
+
+              // Texte principal
               const Text(
                 'As-tu le bon équipement pour ramasser tes déchets ?',
                 style: TextStyle(fontSize: 16),
               ),
+
               const SizedBox(height: 16),
+
+              // Zone grisée avec nos trois items (gants, masque, sac)
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -86,35 +99,120 @@ class _ActionPageState extends State<ActionPage> {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('🧤 Gants',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
-                    Text(
-                        'Porte constamment des gants pour te protéger des coupures et des éraflures.'),
-                    SizedBox(height: 10),
-                    Text('😷 Masque',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
-                    Text(
-                        'En portant des masques, il est crucial de se protéger.'),
-                    SizedBox(height: 10),
-                    Text('🗑️ Sac de transport',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
-                    Text(
-                        'N\'oublie pas d\'emporter un sac poubelle pour transporter tous tes déchets.'),
+                  children: [
+                    // 1) Gants
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'lib/assets/gants.png',
+                          width: 80,
+                          height: 80,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Gants',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Porte constamment des gants pour te protéger '
+                                'des coupures et des éraflures.',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // 2) Masque
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'lib/assets/masque.png',
+                          width: 80,
+                          height: 80,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Masque',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'En portant des masques, il est crucial '
+                                'de se protéger.',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // 3) Sac de transport
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'lib/assets/poubelle-gants.png',
+                          width: 80,
+                          height: 80,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Sac de transport',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'N\'oublie pas d\'emporter un sac poubelle '
+                                'pour transporter tous tes déchets.',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
+
               const SizedBox(height: 24),
+
+              // Bouton de confirmation
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: const Text(
                   'Confirmer et procéder au ramassage',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],
@@ -133,66 +231,36 @@ class _ActionPageState extends State<ActionPage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Container(
-              // width: 400,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: 
-                ListView.builder(
-                  itemCount: _challenges.length,
-                  itemBuilder: (context, index) {
-                    final challenge = _challenges[index];
-                    return ChallengeTile(
-                      challenge: challenge,
-                      onTap: () {
-                        pAction.setTrash(7);
-                        pAction.setChallenge(challenge['id']);
-                        log('${challenge['name']} cliqué, id : ${challenge['id']}');
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ActionForm(trashId: challenge['id'], challengeId: challenge['id'])),
-                        );
-                      },
-                    );
-                  },
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: _challenges.length,
+                        itemBuilder: (context, index) {
+                          final challenge = _challenges[index];
+                          return ChallengeTile(
+                            challenge: challenge,
+                            onTap: () {
+                              pAction.setTrash(7);
+                              pAction.setChallenge(challenge['id']);
+                              log('${challenge['name']} cliqué, id : ${challenge['id']}');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ActionForm(
+                                        trashId: challenge['id'],
+                                        challengeId: challenge['id'])),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 80),
+                  ],
                 ),
-                // ListView.builder(
-                //   itemCount: _challenges.length,
-                //   itemBuilder: (context, index) {
-                //     final item = _challenges[index];
-                //     return ListTile(
-                //       contentPadding: const EdgeInsets.symmetric(
-                //           vertical: 10.0, horizontal: 10.0),
-                //         leading: Image.network(
-                //         '$serverImgUrl${item['image']}',
-                //         width: 80, // Taille plus grande de l'icône
-                //         height: 80,
-                //         errorBuilder: (context, error, stackTrace) {
-                //           return Image.asset(
-                //           'lib/assets/ecoward_logo.png',
-                //           width: 80,
-                //           height: 80,
-                //           );
-                //         },
-                //         ),
-                //       title: Text(
-                //         item['name'],
-                //         style: const TextStyle(
-                //           fontSize: 20, // Taille du texte plus grande
-                //         ),
-                //       ),
-                //       onTap: () {
-                //         pAction.setTrash(item['id']);
-                //         print('${item['name']} cliqué, id : ${item['id']}');
-                //         Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //                 builder: (context) => ActionForm(trashId: item['id'])),
-                //         );
-                //       },
-                //     );
-                //   },
-                // ),
               ),
             ),
     );

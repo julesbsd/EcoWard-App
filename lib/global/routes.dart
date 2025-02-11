@@ -1,5 +1,5 @@
-String serverurl = "http://195.35.48.105:8082/api";
-String serverImgUrl = "http://195.35.48.105:8082/storage/";
+String serverurl = "https://filament.ecoward.me/api";
+String serverImgUrl = "https://filament.ecoward.me/storage/";
 String postLogin = "$serverurl/login";
 String getAutoLogin = "$serverurl/autologin";
 String getLogout = "$serverurl/logout";

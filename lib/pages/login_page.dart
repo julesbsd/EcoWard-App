@@ -210,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                     GestureDetector(
                       onTap: widget.onTap,
                       child: Text(
-                        'Inscription',
+                        '',
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.inversePrimary,
                             fontFamily: 'Raleway',

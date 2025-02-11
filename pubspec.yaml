@@ -52,6 +52,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  percent_indicator: ^4.2.4
 
 dev_dependencies:
   flutter_test:
@@ -79,15 +80,17 @@ flutter:
   fonts:
     - family: Raleway
       fonts:
-        - asset: lib/assets/fonts/Raleway-Regular.ttf
-        - asset: lib/assets/fonts/Raleway-Bold.ttf
+        - asset: fonts/Raleway-Regular.ttf
+        - asset: fonts/Raleway-Bold.ttf
           weight: 700
-        - asset: lib/assets/fonts/Raleway-Italic.ttf
+        - asset: fonts/Raleway-Italic.ttf
           style: italic
-        - asset: lib/assets/fonts/CaviarDreams.ttf
-        - asset: lib/assets/fonts/CaviarDreams_Bold.ttf
+    - family: CaviarDreams
+      fonts:
+        - asset: fonts/CaviarDreams.ttf
+        - asset: fonts/CaviarDreams_Bold.ttf
           weight: 700
-        - asset: lib/assets/fonts/CaviarDreams_Italic.ttf
+        - asset: fonts/CaviarDreams_Italic.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

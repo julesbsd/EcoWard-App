@@ -64,128 +64,246 @@ class DrawerComponent {
                   width: 20,
                 ),
               ),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  radius: 20,
-                  child: Icon(Icons.person, color: Colors.yellow, size: 24),
-                ),
-                title: Text(
-                  'Mon profil',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(fontSize: 18),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProfilePage()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  radius: 20,
-                  child: Icon(Icons.analytics, color: Colors.yellow, size: 24),
-                ),
-                title: Text('Statistiques',
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: ListTile(
+                  leading: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          offset: Offset(4, 4),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                        BoxShadow(
+                          color: Colors.white,
+                          offset: Offset(-4, -4),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 30,
+                      child: Icon(Icons.person,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 30),
+                    ),
+                  ),
+                  title: Text(
+                    'Mon profil',
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge!
-                        .copyWith(fontSize: 18)),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const GraphicPage()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  radius: 20,
-                  child: Icon(Icons.calendar_month, color: Colors.yellow, size: 24),
+                        .copyWith(fontSize: 18),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfilePage()),
+                    );
+                  },
                 ),
-                title: Text('Calendar',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontSize: 18)),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CalendarPage()),
-                  );
-                },
               ),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  radius: 20,
-                  child: Icon(Icons.eco, color: Colors.yellow, size: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: ListTile(
+                  leading: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          offset: Offset(4, 4),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                        BoxShadow(
+                          color: Colors.white,
+                          offset: Offset(-4, -4),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 30,
+                      child: Icon(Icons.analytics,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 30),
+                    ),
+                  ),
+                  title: Text('Statistiques',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontSize: 18)),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CalendarPage()),
+                    );
+                  },
                 ),
-                title: Text('Découvrir la vie des déchets',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontSize: 18)),
-                onTap: () {},
               ),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  radius: 20,
-                  child: Icon(Icons.star, color: Colors.yellow, size: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: ListTile(
+                  leading: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          offset: Offset(4, 4),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                        BoxShadow(
+                          color: Colors.white,
+                          offset: Offset(-4, -4),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 30,
+                      child: Icon(Icons.star,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 30),
+                    ),
+                  ),
+                  title: Text('Noter l\'application',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontSize: 18)),
+                  onTap: () {},
                 ),
-                title: Text('Noter l\'application',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontSize: 18)),
-                onTap: () {},
               ),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  radius: 20,
-                  child: Icon(Icons.business, color: Colors.yellow, size: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: ListTile(
+                  leading: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          offset: Offset(4, 4),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                        BoxShadow(
+                          color: Colors.white,
+                          offset: Offset(-4, -4),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 30,
+                      child: Icon(Icons.business,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 30),
+                    ),
+                  ),
+                  title: Text('Nos partenaires',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontSize: 18)),
+                  onTap: () {},
                 ),
-                title: Text('Nos partenaires',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontSize: 18)),
-                onTap: () {},
               ),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  radius: 20,
-                  child: Icon(Icons.replay, color: Colors.yellow, size: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: ListTile(
+                  leading: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          offset: Offset(4, 4),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                        BoxShadow(
+                          color: Colors.white,
+                          offset: Offset(-4, -4),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 30,
+                      child: Icon(Icons.replay,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 30),
+                    ),
+                  ),
+                  title: Text('Revoir le tutoriel',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontSize: 18)),
+                  onTap: () {},
                 ),
-                title: Text('Revoir le tutoriel',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontSize: 18)),
-                onTap: () {},
               ),
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  radius: 20,
-                  child: Icon(Icons.help, color: Colors.yellow, size: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: ListTile(
+                  leading: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          offset: Offset(4, 4),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                        BoxShadow(
+                          color: Colors.white,
+                          offset: Offset(-4, -4),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 30,
+                      child: Icon(Icons.help,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 30),
+                    ),
+                  ),
+                  title: Text('Aide et mentions',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontSize: 18)),
+                  onTap: () {},
                 ),
-                title: Text('Aide et mentions',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontSize: 18)),
-                onTap: () {},
               ),
               Divider(),
               ListTile(
