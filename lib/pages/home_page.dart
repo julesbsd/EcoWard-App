@@ -14,6 +14,7 @@ import 'package:http/http.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workmanager/workmanager.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:ecoward/components/drawer.dart';
@@ -48,7 +49,7 @@ class _HomePageState extends State<HomePage> {
     pUser = Provider.of<UserProvider>(context, listen: false);
     _initializePedometer();
     _loadSteps();
-    // _initializeWorkmanager();
+    _initializeWorkmanager();
   }
 
   Future<void> _initializePedometer() async {
@@ -129,51 +130,51 @@ class _HomePageState extends State<HomePage> {
     await prefs.setInt('steps', steps);
   }
 
-  // void _initializeWorkmanager() {
-  //   Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  void _initializeWorkmanager() {
+    Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
 
-  //   // Tâche pour sauvegarder les pas toutes les 2 minutes
-  //   Workmanager().registerPeriodicTask(
-  //     "1",
-  //     "saveStepsTask",
-  //     frequency: const Duration(minutes: 15),
-  //   );
+    // Tâche pour sauvegarder les pas toutes les 2 minutes
+    Workmanager().registerPeriodicTask(
+      "1",
+      "saveStepsTask",
+      frequency: const Duration(minutes: 15),
+    );
 
-  //   // Tâche pour réinitialiser les pas à minuit
-  //   Workmanager().registerPeriodicTask(
-  //     "2",
-  //     "resetStepsTask",
-  //     frequency: const Duration(days: 1),
-  //     initialDelay: Duration(
-  //       hours: 24 - DateTime.now().hour,
-  //       minutes: 60 - DateTime.now().minute,
-  //       seconds: 60 - DateTime.now().second,
-  //     ),
-  //   );
-  // }
+    // Tâche pour réinitialiser les pas à minuit
+    Workmanager().registerPeriodicTask(
+      "2",
+      "resetStepsTask",
+      frequency: const Duration(days: 1),
+      initialDelay: Duration(
+        hours: 24 - DateTime.now().hour,
+        minutes: 60 - DateTime.now().minute,
+        seconds: 60 - DateTime.now().second,
+      ),
+    );
+  }
 
-  // static void callbackDispatcher() {
-  //   Workmanager().executeTask((task, inputData) async {
-  //     if (task == "saveStepsTask") {
-  //       final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //       int steps = prefs.getInt('steps') ?? 0;
-  //       // await saveStepsService(steps);
-  //       String body = await JSONHandler().saveSteps(steps);
-  //       Response res =
-  //           await HttpService().makePostRequestWithToken(postSaveStep, body);
-  //       if (res.statusCode == 201) {
-  //         print("Steps saved successfully");
-  //       } else {
-  //         print("Failed to save steps: ${res.body}");
-  //       }
-  //     } else if (task == "resetStepsTask") {
-  //       final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //       await prefs.setInt('steps', 0); // Réinitialiser les pas à zéro
-  //       print("Steps reset to 0 at midnight");
-  //     }
-  //     return Future.value(true);
-  //   });
-  // }
+  static void callbackDispatcher() {
+    Workmanager().executeTask((task, inputData) async {
+      if (task == "saveStepsTask") {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        int steps = prefs.getInt('steps') ?? 0;
+        // await saveStepsService(steps);
+        String body = await JSONHandler().saveSteps(steps);
+        Response res =
+            await HttpService().makePostRequestWithToken(postSaveStep, body);
+        if (res.statusCode == 201) {
+          print("Steps saved successfully");
+        } else {
+          print("Failed to save steps: ${res.body}");
+        }
+      } else if (task == "resetStepsTask") {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('steps', 0); // Réinitialiser les pas à zéro
+        print("Steps reset to 0 at midnight");
+      }
+      return Future.value(true);
+    });
+  }
 
   Widget buildPedometerGauge(String title, int steps, {int dailyGoal = 10000}) {
     double percent = (steps / dailyGoal).clamp(0.0, 1.0);
