@@ -222,37 +222,41 @@ class _HomePageState extends State<HomePage> {
               clipBehavior:
                   Clip.none, // pour permettre à l'icône de dépasser si besoin
               children: [
-                Container(
-                  margin: const EdgeInsets.all(20),
-                  width: 380,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0xFFBEBEBE),
-                        offset: Offset(5, 7),
-                        blurRadius: 5,
-                      ),
-                      BoxShadow(
-                        color: Colors.white,
-                        offset: Offset(-7, -7),
-                        blurRadius: 14,
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      // --- Avatar + médaille ---
-                      Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          ClipOval(
-                            child: GestureDetector(
-                              onTap: () {
-                                scaffoldKey.currentState?.openDrawer();
-                              },
+                // GestureDetector(
+                //   onTap: () {},
+                //   child: ,
+                // ),
+                GestureDetector(
+                  onTap: () {
+                    scaffoldKey.currentState?.openDrawer();
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.all(20),
+                    width: 380,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0xFFBEBEBE),
+                          offset: Offset(5, 7),
+                          blurRadius: 5,
+                        ),
+                        BoxShadow(
+                          color: Colors.white,
+                          offset: Offset(-7, -7),
+                          blurRadius: 14,
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        // --- Avatar + médaille ---
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            ClipOval(
                               child: Image.network(
                                 image.isNotEmpty
                                     ? image
@@ -269,93 +273,95 @@ class _HomePageState extends State<HomePage> {
                                 },
                               ),
                             ),
-                          ),
-                          Positioned(
-                            right: -2,
-                            bottom: -2,
-                            child: Container(
-                              padding: const EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 2,
-                                  )
-                                ],
-                              ),
-                              child: const Icon(
-                                Icons.emoji_events,
-                                color: Colors.amber,
-                                size: 16,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 30),
-                      // --- Textes ---
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Bonjour Padideh",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: "CaviaDream",
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${pUser.user.points}',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const Text(
-                                      "points",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
+                            Positioned(
+                              right: -2,
+                              bottom: -2,
+                              child: Container(
+                                padding: const EdgeInsets.all(3),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 2,
+                                    )
                                   ],
                                 ),
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  width: 1,
-                                  height: 30,
-                                  color: Colors.grey[300],
+                                child: const Icon(
+                                  Icons.emoji_events,
+                                  color: Colors.amber,
+                                  size: 16,
                                 ),
-                                const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "5ème",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      "classement",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 30),
+                        // --- Textes ---
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Bonjour Padideh",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: "CaviaDream",
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${pUser.user.points}',
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const Text(
+                                        "points",
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    width: 1,
+                                    height: 30,
+                                    color: Colors.grey[300],
+                                  ),
+                                  const Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "5ème",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        "classement",
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Positioned(
