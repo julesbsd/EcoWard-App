@@ -11,7 +11,7 @@ ThemeData lightMode = ThemeData(
     ),
     textTheme: TextTheme(
       displayLarge: TextStyle(
-          fontFamily: 'Raleway',
+          fontFamily: 'CaviarDreams',
           fontSize: 16,
           fontWeight: FontWeight.normal,
           color: Colors.grey.shade600),

@@ -58,11 +58,11 @@ class JSONHandler {
   }
 
   Future<String> updateUser(
-      String name, String email, String? profileImage) async {
+      String name, String email, String profileImage) async {
     Map<String, String> parameters = {
       "name": name,
       "email": email,
-      "profileImage": profileImage != null ? profileImage : '',
+      "profileImage": profileImage,
     };
     return jsonEncode(parameters);
   }

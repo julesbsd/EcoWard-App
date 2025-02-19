@@ -1,3 +1,4 @@
+import 'package:ecoward/global/routes.dart';
 import 'package:flutter/material.dart';
 
 class RankingTile extends StatelessWidget {
@@ -21,7 +22,9 @@ class RankingTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Container(
         decoration: BoxDecoration(
-          color: me ? Color.fromARGB(255, 236, 221, 4) : Color.fromARGB(255, 250, 250, 250), // Background color
+          color: me
+              ? Color.fromARGB(255, 236, 221, 4)
+              : Color.fromARGB(255, 250, 250, 250), // Background color
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             // Ombres internes
@@ -41,24 +44,37 @@ class RankingTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Row(
             children: [
-              // Avatar
-              CircleAvatar(
-                radius: 25,
-                backgroundImage: avatarUrl.isNotEmpty
-                    ? NetworkImage(avatarUrl)
-                    : null, // Image de l'avatar
-                backgroundColor: Colors.grey[300],
-                child: avatarUrl.isEmpty
-                    ? Text(
-                        name[0],
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: Colors.black,
-                        ),
-                      )
-                    : null,
-              ),
+                avatarUrl.startsWith('https://')
+                  ? ClipOval(
+                    child: Image.network(
+                    avatarUrl,
+                    width: 45,
+                    height: 45,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(
+                      Icons.account_circle,
+                      size: 50,
+                      color: Colors.grey,
+                      );
+                    },
+                    ),
+                  )
+                  : ClipOval(
+                    child: Image.network(
+                    '$serverImgUrl${avatarUrl}',
+                    width: 45,
+                    height: 45,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(
+                      Icons.account_circle,
+                      size: 50,
+                      color: Colors.grey,
+                      );
+                    },
+                    ),
+                  ),
               SizedBox(width: 16),
               // Texte principal
               Expanded(

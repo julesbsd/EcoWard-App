@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:ecoward/components/my_button.dart';
 import 'package:ecoward/controllers/json_handler.dart';
 import 'package:ecoward/controllers/providers/UserProvider.dart';
 import 'package:ecoward/global/routes.dart';
@@ -34,29 +35,44 @@ class _ProfilePageState extends State<ProfilePage> {
     pUser = Provider.of<UserProvider>(context, listen: false);
     _nameController.text = pUser.user.name;
     _emailController.text = pUser.user.email;
+    profileImage = pUser.user.profile_photo_url;
   }
 
   Future<void> _updateUser() async {
     if (_formKey.currentState!.validate()) {
-      String body = await JSONHandler().updateUser(
-        _nameController.text,
-        _emailController.text,
-        profileImage,
-      );
+      String body;
+      if (_image != null) {
+        body = await JSONHandler().updateUser(
+          _nameController.text,
+          _emailController.text,
+          profileImage,
+        );
+      } else {
+        body = await JSONHandler().updateUser(
+          _nameController.text,
+          _emailController.text,
+          pUser.user.profile_photo_url, // ou ne pas inclure le paramètre selon l'implémentation de JSONHandler
+        );
+      }
       Response res = await HttpService().makePostRequestWithToken(
         updateUser,
         body,
       );
+      inspect(body);
       if (res.statusCode == 200) {
         final Map<String, dynamic> responseData = jsonDecode(res.body);
         final Map<String, dynamic> userData = responseData['user'];
         final int points = responseData['points'];
-
+        final String newProfileImage = responseData['profile_photo_url'];
+        print(res.body);
         User user = User.fromJson(userData);
         pUser.setPoints(points);
         pUser.setUser(user);
+        pUser.setProfileImage(newProfileImage);
         Navigator.pop(context);
       } else {
+        print(res.body);
+
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -93,9 +109,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profil'),
+        title: Text('Mon profil'),
         // backgroundColor: Color.fromRGBO(0, 230, 118, 1),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -105,6 +121,47 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Column(
                 children: [
+                  Container(
+                    child: GestureDetector(
+                      onTap: _pickImage,
+                      child: ClipOval(
+                        child: Image.network(
+                          '$serverImgUrl${pUser.user.profile_photo_url}',
+                          width: 120,
+                          height: 120,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(
+                              Icons.account_circle,
+                              size: 60,
+                              color: Colors.grey,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Text(
+                      pUser.user.name,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: "CaviarDream",
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 50),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Informations personnelles',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30.0),
                   Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.secondary,
@@ -119,13 +176,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                     child: TextField(
+                      readOnly: true,
                       controller: _nameController,
                       decoration: InputDecoration(
-                        hintStyle: Theme.of(context).textTheme.displayLarge,
-                        prefixIcon: const Icon(Icons.email_outlined),
+                        hintStyle: Theme.of(context).textTheme.bodyLarge,
+                        prefixIcon: const Icon(Icons.lock),
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 20.0),
+                            vertical: 20.0, horizontal: 20.0),
                       ),
                       obscureText: false,
                     ),
@@ -145,63 +203,40 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                     child: TextField(
+                      readOnly: true,
                       controller: _emailController,
                       decoration: InputDecoration(
                         hintStyle: Theme.of(context).textTheme.displayLarge,
-                        prefixIcon: const Icon(Icons.email_outlined),
+                        prefixIcon: const Icon(Icons.lock),
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 20.0),
+                            vertical: 20.0, horizontal: 20.0),
                       ),
                       obscureText: false,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 40),
                   Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(14),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context).colorScheme.shadow,
-                          offset: const Offset(8.0, 8.0),
-                          blurRadius: 8,
-                          spreadRadius: 0.0,
-                        ),
-                      ],
-                    ),
-                    child: GestureDetector(
-                      onTap: _pickImage,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 20.0),
-                        margin: const EdgeInsets.symmetric(horizontal: 25),
-                        child: Center(
-                          child: Text("Choose Profile Image"),
-                        ),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Modifier le mot de passe',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   SizedBox(height: 20),
-                  Column(
-                    children: [
-                      if (_image != null)
-                        Image.file(
-                          _image!,
-                          height: 100,
-                          width: 100,
-                        ),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
-                  ElevatedButton(
-                    onPressed: _updateUser,
-                    child: Text('Mettre à jour'),
-                  ),
+
+                  // ElevatedButton(
+                  //   onPressed: _updateUser,
+                  //   child: Text('Mettre à jour'),
+                  // ),
+                  MyButton(
+                      text: "Enregistrer les modification",
+                      onTap: _updateUser,
+                      color: Theme.of(context).colorScheme.primary,
+                      textColor: Colors.black),
                 ],
               ),
             ],

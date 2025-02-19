@@ -27,6 +27,11 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setProfileImage(String newProfileImage) {
+    user.profile_photo_url = newProfileImage;
+    notifyListeners();
+  }
+
   User get getUser {
     return user;
   }

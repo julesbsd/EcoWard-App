@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:ecoward/components/ranking_tile.dart';
 import 'package:ecoward/components/skeletonRankingTile.dart';
@@ -37,7 +38,7 @@ class _RankingPageState extends State<RankingPage> {
       final Map<String, dynamic> responseData = jsonDecode(res.body);
       final List<dynamic> CompanyRanking = responseData['CompanyRanking'];
       final List<dynamic> GlobalRanking = responseData['GlobalRanking'];
-
+inspect(responseData['CompanyRanking']);
       setState(() {
         _CompanyRanking = CompanyRanking;
         _GlobalRanking = GlobalRanking;
@@ -145,7 +146,7 @@ class _RankingPageState extends State<RankingPage> {
                         name: item['name'] ?? 'Anonyme',
                         points: item['points'] ?? 0,
                         rank: index + 1,
-                        avatarUrl: item['profile_photo_url'] ?? '',
+                        avatarUrl: item['profile_photo_path'] ?? '',
                       );
                     },
                   ),
