@@ -250,7 +250,7 @@ class _ActionPageState extends State<ActionPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ActionForm(
-                                        trashId: challenge['id'],
+                                        trashId: challenge['trash_id'],
                                         challengeId: challenge['id'])),
                               );
                             },

@@ -50,6 +50,7 @@ class _HomePageState extends State<HomePage> {
     _initializePedometer();
     _loadSteps();
     _initializeWorkmanager();
+    _loadPoints();
   }
 
   Future<void> _initializePedometer() async {
@@ -58,6 +59,19 @@ class _HomePageState extends State<HomePage> {
     } else {
       // Handle permission denial
       print("Permission denied for activity recognition");
+    }
+  }
+
+  Future<void> _loadPoints() async {
+    Response res = await HttpService().makeGetRequestWithToken(getPoints);
+    if (res.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(res.body);
+      final int points = responseData['points'];
+      print("Points récupérés : ${res.body}");
+
+      pUser.setPoints(points);
+    } else {
+      print("Failed to load points: ${res.body}");
     }
   }
 
