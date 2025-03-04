@@ -46,6 +46,9 @@ class _ActionFormState extends State<ActionForm> {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(
       source: ImageSource.camera,
+      maxWidth: 500, // Largeur max en pixels (redimensionnement)
+      maxHeight: 500, // Hauteur max en pixels
+      imageQuality: 50, // Compression (0-100)
     );
 
     if (pickedFile != null) {
