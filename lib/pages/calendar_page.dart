@@ -13,7 +13,9 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
   late UserProvider pUser;
-
+/**
+ * @TODO : Récupérer de l'api les actions de l'utilisateur pour les afficher dans le calendrier
+ */
   @override
   void initState() {
     super.initState();
