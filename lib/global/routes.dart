@@ -6,6 +6,8 @@ String postLogin = "$serverurl/login";
 
 String getAutoLogin = "$serverurl/autologin";
 
+String getActions = "$serverurl/user/actions";
+
 String getPoints = "$serverurl/user/points";
 
 String getLogout = "$serverurl/logout";

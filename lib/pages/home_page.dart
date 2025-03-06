@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:ecoward/pages/calendar_page.dart';
+import 'package:ecoward/pages/statistics_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ecoward/controllers/json_handler.dart';
 import 'package:ecoward/controllers/login_or_register.dart';

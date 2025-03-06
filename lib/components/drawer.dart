@@ -1,4 +1,4 @@
-import 'package:ecoward/pages/calendar_page.dart';
+import 'package:ecoward/pages/statistics_page.dart';
 import 'package:ecoward/pages/friends_page.dart';
 import 'package:ecoward/pages/graphic_page.dart';
 import 'package:ecoward/pages/profile_page.dart';
@@ -148,7 +148,7 @@ class DrawerComponent {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CalendarPage()),
+                      MaterialPageRoute(builder: (context) => StatisticsPage()),
                     );
                   },
                 ),
