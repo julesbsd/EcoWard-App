@@ -271,18 +271,20 @@ class _HomePageState extends State<HomePage> {
                           clipBehavior: Clip.none,
                           children: [
                             ClipOval(
-                              child: Image.network(
-                                image.isNotEmpty
-                                    ? image
-                                    : '$serverImgUrl${pUser.user.profile_photo_url}',
-                                width: 90,
-                                height: 90,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Icon(
-                                    Icons.account_circle,
-                                    size: 60,
-                                    color: Colors.grey,
+                              child: Consumer<UserProvider>(
+                                builder: (context, userProvider, child) {
+                                  return Image.network(
+                                    '$serverImgUrl${userProvider.user.profile_photo_url}',
+                                    width: 90,
+                                    height: 90,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Icon(
+                                        Icons.account_circle,
+                                        size: 60,
+                                        color: Colors.grey,
+                                      );
+                                    },
                                   );
                                 },
                               ),
@@ -317,8 +319,8 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Bonjour Padideh",
+                              Text(
+                                'Bonjour ${pUser.user.name}',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontFamily: "CaviaDream",

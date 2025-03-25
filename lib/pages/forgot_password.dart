@@ -16,11 +16,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       TextEditingController();
 
   String? _errorMessage;
+  bool _isLoading = false;
 
   Future<void> _resetPassword(email, String password) async {
     try {
-
-      if(email.isEmpty || password.isEmpty) {
+      if (email.isEmpty || password.isEmpty) {
         setState(() {
           _errorMessage = 'Veuillez remplir tous les champs.';
         });
@@ -34,30 +34,41 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         });
         return;
       }
+      setState(() {
+        _isLoading = true;
+      });
       showDialog(
-          context: context,
-          builder: (context) => const Center(child: CircularProgressIndicator()));
-      // final response = await resetPasswordService(email, password);
+        context: context,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
 
-      // if (response['success']) {
-      //   // redirect to login page
-      //   Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => const LoginOrRegister(),
-      //     ),
-      //   );
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     const SnackBar(
-      //       content: Text('Mot de passe réinitialisé. Connectez-vous'),
-      //     ),
-      //   );
-      // } else {
-      //   setState(() {
-      //     Navigator.pop(context);
-      //     _errorMessage = _extractErrorMessage(response['error']);
-      //   });
-      // }
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      Navigator.pop(context); // Close the loading dialog
+      setState(() {
+        _isLoading = false;
+      });
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Succès'),
+          content: const Text('Votre mot de passe a été mis à jour.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the success dialog
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginOrRegister(),
+                  ),
+                );
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
     } catch (e) {
       setState(() {
         _errorMessage = 'An error occurred. Please try again.';
@@ -210,11 +221,28 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 MyButton(
                     text: 'Réinitialiser le mot de passe',
                     textColor: Colors.white,
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                    onTap: () {
-                      _resetPassword(
-                          emailController.text, passwordController.text);
-                    }),
+                    color: Theme.of(context).colorScheme.primary,
+                    child: _isLoading
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.black),
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : Text("Réinitialiser le mot de passe",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontFamily: 'Raleway')),
+                    onTap: _isLoading
+                        ? null
+                        : () {
+                            _resetPassword(
+                                emailController.text, passwordController.text);
+                          }),
                 const SizedBox(height: 16.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

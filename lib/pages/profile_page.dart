@@ -28,6 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   File? _image;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -40,55 +41,61 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _updateUser() async {
     if (_formKey.currentState!.validate()) {
-      String body;
-      if (_image != null) {
-        body = await JSONHandler().updateUser(
-          _nameController.text,
-          _emailController.text,
-          profileImage,
-        );
-      } else {
-        body = await JSONHandler().updateUser(
-          _nameController.text,
-          _emailController.text,
-          pUser.user.profile_photo_url, // ou ne pas inclure le paramètre selon l'implémentation de JSONHandler
-        );
-      }
-      Response res = await HttpService().makePostRequestWithToken(
-        updateUser,
-        body,
-      );
-      inspect(body);
-      if (res.statusCode == 200) {
-        final Map<String, dynamic> responseData = jsonDecode(res.body);
-        final Map<String, dynamic> userData = responseData['user'];
-        final int points = responseData['points'];
-        final String newProfileImage = responseData['profile_photo_url'];
-        print(res.body);
-        User user = User.fromJson(userData);
-        pUser.setPoints(points);
-        pUser.setUser(user);
-        pUser.setProfileImage(newProfileImage);
-        Navigator.pop(context);
-      } else {
-        print(res.body);
+      setState(() {
+        _isLoading = true;
+      });
 
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Error'),
-            content: Text('Error: ${res.body}'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          ),
+      try {
+        String body;
+        if (_image != null) {
+          body = await JSONHandler().updateUser(
+            _nameController.text,
+            _emailController.text,
+            profileImage,
+          );
+        } else {
+          body = await JSONHandler().updateUser(
+            _nameController.text,
+            _emailController.text,
+            pUser.user.profile_photo_url,
+          );
+        }
+
+        Response res = await HttpService().makePostRequestWithToken(
+          updateUser,
+          body,
         );
-        print('Error: ${res.body}');
+
+        if (res.statusCode == 200) {
+          final Map<String, dynamic> responseData = jsonDecode(res.body);
+          final Map<String, dynamic> userData = responseData['user'];
+          final int points = responseData['points'];
+          final String newProfileImage = responseData['profile_photo_url'];
+          User user = User.fromJson(userData);
+          pUser.setPoints(points);
+          pUser.setUser(user);
+          pUser.setProfileImage(newProfileImage);
+          Navigator.pop(context);
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Error'),
+              content: Text('Error: ${res.body}'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.pop(context);
       }
     }
   }
@@ -125,19 +132,26 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: GestureDetector(
                       onTap: _pickImage,
                       child: ClipOval(
-                        child: Image.network(
-                          '$serverImgUrl${pUser.user.profile_photo_url}',
-                          width: 120,
-                          height: 120,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Icon(
-                              Icons.account_circle,
-                              size: 60,
-                              color: Colors.grey,
-                            );
-                          },
-                        ),
+                        child: _image != null
+                            ? Image.file(
+                                _image!,
+                                width: 120,
+                                height: 120,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                '$serverImgUrl${pUser.user.profile_photo_url}',
+                                width: 120,
+                                height: 120,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(
+                                    Icons.account_circle,
+                                    size: 60,
+                                    color: Colors.grey,
+                                  );
+                                },
+                              ),
                       ),
                     ),
                   ),
@@ -228,15 +242,33 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   SizedBox(height: 20),
 
-                  // ElevatedButton(
-                  //   onPressed: _updateUser,
-                  //   child: Text('Mettre à jour'),
-                  // ),
+                  // MyButton(
+                  //     text: "Enregistrer les modification",
+                  //     onTap: _updateUser,
+                  //     color: Theme.of(context).colorScheme.primary,
+                  //     textColor: Colors.black),
+
                   MyButton(
-                      text: "Enregistrer les modification",
-                      onTap: _updateUser,
-                      color: Theme.of(context).colorScheme.primary,
-                      textColor: Colors.black),
+                    text: "Enregistrer les modifications",
+                    onTap: _isLoading ? null : _updateUser,
+                    color: Theme.of(context).colorScheme.primary,
+                    textColor: Colors.black,
+                    child: _isLoading
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.black),
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : Text("Enregistrer les modifications",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontFamily: 'Raleway')),
+                  ),
                 ],
               ),
             ],

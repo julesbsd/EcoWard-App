@@ -39,4 +39,8 @@ class UserProvider with ChangeNotifier {
   List<dynamic> get getActions {
     return user.actions;
   }
+
+  int get getSteps {
+    return user.steps;
+  }
 }

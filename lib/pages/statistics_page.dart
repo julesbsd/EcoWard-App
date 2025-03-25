@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:ecoward/components/calendar_tile.dart';
 import 'package:ecoward/controllers/providers/UserProvider.dart';
@@ -33,7 +34,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
             return isSameDay(DateTime.parse(action.created_at), day);
           } catch (e) {
             // Log the error and return false to exclude this action
-            log('Invalid date format: ${action.created_at}');
+            // log('Invalid date format: ${action.created_at}');
             return false;
           }
         })
@@ -192,7 +193,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           ],
                         ),
                         child: Center(
-                          child: buildPedometerGauge("Nombre de pas", 2514),
+                          child: buildPedometerGauge("Nombre de pas", pUser.getSteps),
                         ),
                       ),
                       Container(

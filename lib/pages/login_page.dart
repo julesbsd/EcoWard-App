@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
+  bool _isLoading = false;
 
   LoginPage({super.key, required this.onTap});
 
@@ -132,77 +133,102 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 30.0),
                 MyButton(
                     text: 'Connexion',
-                    textColor: Colors.white,
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                    onTap: () async {
-                      String body = await JSONHandler()
-                          .login(emailController.text, passwordController.text);
+                    textColor: Colors.black,
+                    color: Theme.of(context).colorScheme.primary,
+                    onTap: widget._isLoading
+                        ? null
+                        : () async {
+                            setState(() {
+                              widget._isLoading = true;
+                            });
+                            String body = await JSONHandler().login(
+                                emailController.text, passwordController.text);
 
-                      Response res = await HttpService()
-                          .makePostRequestWithoutToken(postLogin, body);
+                            Response res = await HttpService()
+                                .makePostRequestWithoutToken(postLogin, body);
 
-                      if (res.statusCode == 200) {
-                        final Map<String, dynamic> responseData =
-                            jsonDecode(res.body);
+                            if (res.statusCode == 200) {
+                              final Map<String, dynamic> responseData =
+                                  jsonDecode(res.body);
 
-                        final String token = responseData['access_token'];
+                              final String token = responseData['access_token'];
 
-                        final Map<String, dynamic> userData =
-                            responseData['user'];
+                              final Map<String, dynamic> userData =
+                                  responseData['user'];
 
-                        final String image =
-                            responseData['profile_photo_url'] ?? '';
+                              final String image =
+                                  responseData['profile_photo_url'] ?? '';
 
-                        User user = User.fromJson(userData);
+                              User user = User.fromJson(userData);
 
-                        await PersistanceHandler().setAccessToken(token);
-                        await PersistanceHandler().profilePhoto(image);
-                        pUser.setUser(user);
+                              await PersistanceHandler().setAccessToken(token);
+                              await PersistanceHandler().profilePhoto(image);
+                              pUser.setUser(user);
 
-                        // Vérifier les données sauvegardées
-                        var getToken =
-                            await PersistanceHandler().getAccessToken();
-                        User? getUser = await PersistanceHandler().getUser();
+                              // Vérifier les données sauvegardées
+                              var getToken =
+                                  await PersistanceHandler().getAccessToken();
+                              User? getUser =
+                                  await PersistanceHandler().getUser();
 
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Menu(),
-                          ),
-                        );
-                      } else {
-                        final Map<String, dynamic> responseData =
-                            jsonDecode(res.body);
-
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Erreur de connexion'),
-                              content: responseData['error'] is Map
-                                  ? Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: (responseData['error']
-                                              as Map<String, dynamic>)
-                                          .values
-                                          .expand((element) => element)
-                                          .map((e) => Text(e))
-                                          .toList(),
-                                    )
-                                  : Text(responseData['error'].toString()),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text('OK'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
+                              setState(() {
+                                widget._isLoading = false;
+                              });
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Menu(),
                                 ),
-                              ],
-                            );
+                              );
+                            } else {
+                              final Map<String, dynamic> responseData =
+                                  jsonDecode(res.body);
+
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Erreur de connexion'),
+                                    content: responseData['error'] is Map
+                                        ? Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: (responseData['error']
+                                                    as Map<String, dynamic>)
+                                                .values
+                                                .expand((element) => element)
+                                                .map((e) => Text(e))
+                                                .toList(),
+                                          )
+                                        : Text(
+                                            responseData['error'].toString()),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           },
-                        );
-                      }
-                    }),
+                    child: widget._isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.black),
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Text("Connexion",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontFamily: 'Raleway'))),
                 const SizedBox(height: 16.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

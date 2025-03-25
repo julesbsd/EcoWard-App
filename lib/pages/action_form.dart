@@ -68,7 +68,6 @@ class _ActionFormState extends State<ActionForm> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Les services de localisation sont désactivés.'),
@@ -132,7 +131,6 @@ class _ActionFormState extends State<ActionForm> {
         _isLoading = true;
       });
 
-
       String base64ImageTop = base64Encode(await _imageTop!.readAsBytes());
 
       String base64ImageBottom =
@@ -164,7 +162,6 @@ class _ActionFormState extends State<ActionForm> {
           _isLoading = false;
           _isSuccess = true;
         });
-
 
         await Future.delayed(const Duration(seconds: 1));
 
@@ -273,7 +270,10 @@ class _ActionFormState extends State<ActionForm> {
                         ),
                         Text(
                           'QT : $quantity',
-                          style: const TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                              fontFamily: 'Raleway'),
                         ),
                         IconButton(
                           icon: Icon(Icons.add_circle,
@@ -331,7 +331,8 @@ class _ActionFormState extends State<ActionForm> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child:
-                          const Icon(Icons.check_circle, color: Colors.green),
+                          // const Icon(Icons.check_circle, color: Colors.green),
+                          Image.asset('lib/assets/throw.jpg', fit: BoxFit.cover),
                     ),
                   ],
                 ),
@@ -349,11 +350,10 @@ class _ActionFormState extends State<ActionForm> {
                       children: [
                         Text(
                           "Important ! Pense à ajouter une photo te montrant jeter le déchet pour valider tes points. Les photos sont régulièrement vérifiées par notre équipe.",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  fontSize: 12, fontWeight: FontWeight.w300),
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.black,
+                              fontFamily: 'Raleway'),
                         ),
                       ],
                     ),
@@ -361,61 +361,77 @@ class _ActionFormState extends State<ActionForm> {
                 ),
                 const Spacer(),
                 MyButton(
-                  text: 'Valider',
-                  color: const Color.fromRGBO(48, 48, 48, 1),
-                  textColor: Colors.white,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Confirmation'),
-                          content: Text(
-                            'Êtes-vous sûr de vouloir valider cette action ?',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
+                    text: 'Valider',
+                    color: Theme.of(context).colorScheme.primary,
+                    textColor: Colors.white,
+                    onTap: _isLoading
+                        ? null
+                        : () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Confirmation'),
+                                  content: Text(
+                                    'Êtes-vous sûr de vouloir valider cette action ?',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        'Annuler',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge,
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        sendAction();
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        'Valider',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(color: Colors.green),
+                                      ),
+                                    ),
+                                  ],
+                                );
                               },
-                              child: Text(
-                                'Annuler',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
+                            );
+                          },
+                    child: _isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.black),
+                              strokeWidth: 2,
                             ),
-                            TextButton(
-                              onPressed: () {
-                                sendAction();
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(
-                                'Valider',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(color: Colors.green),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
-                const SizedBox(height: 10),
+                          )
+                        : const Text("Valider",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontFamily: 'Raleway'))),
+                const SizedBox(height: 15),
                 MyButton(
                     text: "Nouveau ramassage",
                     textColor: Theme.of(context).colorScheme.inversePrimary,
-                    color: Theme.of(context).colorScheme.primary,
-                    onTap: () {})
+                    color: Colors.white,
+                    onTap: () {}),
+                const SizedBox(height: 15),
               ],
             ),
           ),
-          if (_isLoading)
-            Center(
-              child: CircularProgressIndicator(),
-            ),
           if (_isSuccess) Center(child: AnimatedCheck()),
         ],
       ),

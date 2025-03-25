@@ -5,6 +5,7 @@ class MyButton extends StatelessWidget {
   final void Function()? onTap;
   final Color color;
   final Color textColor;
+  final Widget? child;
 
   const MyButton({
     super.key,
@@ -12,6 +13,7 @@ class MyButton extends StatelessWidget {
     required this.onTap,
     required this.color,
     required this.textColor,
+    this.child,
   });
 
   @override
@@ -38,9 +40,14 @@ class MyButton extends StatelessWidget {
         ),
         padding: const EdgeInsets.all(5),
         child: Center(
-          child: Text(text,
-              style: TextStyle(
-                  fontSize: 20, color: textColor, fontFamily: 'Raleway')),
+          child: child ??
+              Text(
+                  // Utiliser child s'il existe, sinon utiliser le texte
+                  text,
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontFamily: 'Raleway')),
         ),
       ),
     );
