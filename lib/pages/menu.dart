@@ -156,8 +156,8 @@ class _MenuState extends State<Menu> {
               pPage.setIndex(1);
             });
           },
-          child: const Icon(Icons.add, size: 40,),
-          backgroundColor: Colors.black,
+          child: const Icon(Icons.add, size: 40, color: Colors.black,),
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),

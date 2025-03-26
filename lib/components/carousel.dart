@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 final List<String> imgList = [
-  'lib/assets/image1.jpg',
-  'lib/assets/image2.jpg',
-  'https://picsum.photos/250?image=10',
-  'https://picsum.photos/250?image=11',
+  'lib/assets/carousel1.png',
+  'lib/assets/carousel2.png',
+  'lib/assets/carousel3.png',
+  'lib/assets/carousel4.png',
   // 'https://picsum.photos/250?image=12',
 ];
 
